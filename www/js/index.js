@@ -29,45 +29,18 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        document.getElementById("obj_id").addEventListener("click", this.startKordovaTemplateApp, false);
-        document.getElementById("activate-main").addEventListener("click", kuroapp.activateMainApp, false);
-        document.getElementById("activate-scan").addEventListener("click", kuroapp.activateScanApp, false);
-        document.getElementById("activate-debug").addEventListener("click", kuroapp.activateDebugApp, false);
     },
 
     // deviceready Event Handler
     //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
+    // The scope of 'this' is the event. In order to call the 'init'
+    // function, we must explicitly call 'kuroapp.init(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+        // device is ready. events can be added, cordova stuff will work
         kuroapp.init();
-        kuroapp.screenMain = document.getElementById("main-app");
-        kuroapp.screenScan = document.getElementById("image-app");
-        kuroapp.screenDebug = document.getElementById("debug-app");
-        kuroapp.get("http://danbooru.donmai.us/posts.json");
-    },
-
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        // var parentElement = document.getElementById(id);
-        // var listeningElement = parentElement.querySelector('.listening');
-        // var receivedElement = parentElement.querySelector('.received');
-        // listeningElement.setAttribute('style', 'display:none;');
-        // receivedElement.setAttribute('style', 'display:block;');
-        kuroapp.log('Received Event: ' + id);
-    },
-
-    startKordovaTemplateApp: function() {
-        // onclick callback to initialize ble and start scan
-        kuroapp.log("inside app button event");
         kuroapp.refreshMainPage();
-        // kuroapp.get("http://danbooru.donmai.us/posts.json");
     },
-
-
 
 };
-
 
 app.initialize();

@@ -5,13 +5,21 @@ var kuroapp = {
         this.updateCurrentPath();
         this.log(this.template_dir);
         this.log("KuroApp starting...");
+        this.screenMain = document.getElementById("main-app");
+        this.screenScan = document.getElementById("image-app");
+        this.screenDebug = document.getElementById("debug-app");
+
         this.bindEvents();
         this.log("KuroApp initialized!");
     },
 
     bindEvents: function() {
-        // body
-        $("#oop-btn-01").on("click", kuroapp.hello);
+        // bind events
+        document.getElementById("obj_id").addEventListener("click", kuroapp.refreshMainPage, false);
+        document.getElementById("activate-main").addEventListener("click", kuroapp.activateMainApp, false);
+        document.getElementById("activate-scan").addEventListener("click", kuroapp.activateScanApp, false);
+        document.getElementById("activate-debug").addEventListener("click", kuroapp.activateDebugApp, false);
+        kuroapp.activateMainApp();
     },
 
     updateCurrentPath: function() {
@@ -46,7 +54,6 @@ var kuroapp = {
     },
 
     onGetSuccess: function(data) {
-        // kuroapp.log("Get result: " + JSON.stringify(data));
         for( var i = 0; i < data.length; i++) {
             var d = data[i];
             kuroapp.log(d.id);
@@ -57,8 +64,8 @@ var kuroapp = {
     refreshMainPage: function() {
         $("#imageListMain").empty();
         kuroapp.get(kuroapp.current_path);
+        kuroapp.activateMainApp();
     },
-
 
     updateImageListOld: function(imageData) {
         kuroapp.log("adding {{id}} to imageListMain".replace("{{id}}", imageData.id));
@@ -126,6 +133,8 @@ var kuroapp = {
         $("#activate-main").addClass("active");
         $("#activate-scan").removeClass("active");
         $("#activate-debug").removeClass("active");
+        document.addEventListener("backbutton", kuroapp.onBackKeyDownMainScreen, false);
+
     },
 
     activateScanApp: function() {
@@ -137,7 +146,17 @@ var kuroapp = {
         $("#activate-main").removeClass("active");
         $("#activate-scan").addClass("active");
         $("#activate-debug").removeClass("active");
+        document.addEventListener("backbutton", kuroapp.onBackKeyDownImageScreen, false);
     },
+
+    onBackKeyDownImageScreen: function() {
+        kuroapp.activateMainApp();
+    },
+
+    onBackKeyDownMainScreen: function() {
+        kuroapp.refreshMainPage();
+    },
+
 
     activateDebugApp: function() {
         // body...
