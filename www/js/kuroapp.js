@@ -1,6 +1,8 @@
 var kuroapp = {
     init: function() {
         this.base_url = "http://danbooru.donmai.us";
+        this.path = "/posts.json";
+        this.updateCurrentPath();
         this.log(this.template_dir);
         this.log("KuroApp starting...");
         this.bindEvents();
@@ -12,8 +14,8 @@ var kuroapp = {
         $("#oop-btn-01").on("click", kuroapp.hello);
     },
 
-    hello: function() {
-        kuroapp.log("Connecting...");
+    updateCurrentPath: function() {
+        kuroapp.current_path = kuroapp.base_url + kuroapp.path
     },
 
     setName: function(input) {
@@ -53,13 +55,23 @@ var kuroapp = {
 
     },
     refreshMainPage: function() {
-
+        $("#imageListMain").empty();
+        kuroapp.get(kuroapp.current_path);
     },
 
 
-    updateImageList: function(imageData) {
+    updateImageListOld: function(imageData) {
         kuroapp.log("adding {{id}} to imageListMain".replace("{{id}}", imageData.id));
         var newImage = '<div class="image-thumb"><img id="{{id}}" src="{{preview_url}}" alt="use id here later"></div>'
+        var imageLine = newImage.replace("{{preview_url}}", kuroapp.formatFullURL(imageData.preview_file_url));
+        imageLine = imageLine.replace("{{id}}", imageData.id);
+        $("#imageListMain").append(imageLine);
+        document.getElementById(imageData.id).addEventListener("click", kuroapp.loadFullImage.bind(null, imageData), false);
+    },
+
+    updateImageList: function(imageData) {
+        kuroapp.log("adding {{id}} to imageListMain".replace("{{id}}", imageData.id));
+        var newImage = '<img id="{{id}}" src="{{preview_url}}" alt="use id here later" />'
         var imageLine = newImage.replace("{{preview_url}}", kuroapp.formatFullURL(imageData.preview_file_url));
         imageLine = imageLine.replace("{{id}}", imageData.id);
         $("#imageListMain").append(imageLine);
