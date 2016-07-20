@@ -35,19 +35,28 @@
         <meta name="viewport" content="user-scalable=1, minimum-scale=0.1, maximum-scale=10, initial-scale=1, height=device-height, width=device-width">
         <link rel="stylesheet" type="text/css" href="lib/ratchet/css/ratchet.css">
         <link rel="stylesheet" type="text/css" href="lib/ratchet/css/ratchet-theme-android.css">
+        <script type="text/javascript" src="lib/handlebars-v4.0.5.js"></script>
+        <script type="text/javascript" src="lib/jquery-3.1.0.js"></script>
+        <script type="text/javascript" src="lib/quojs-3.0.5/quo.js"></script>
+
         <link rel="stylesheet" type="text/css" href="css/index.css">
-        <script type="text/javascript" src="js/kuroapp.js"></script>
         <title>KordovaTemplate</title>
     </head>
     <body>
 
         <div class="app">
             <header class="bar bar-nav">
-                <button class="btn pull-left">
-                    Left Button
+                <button id="top-nav-button-home" class="btn pull-left">
+                    Home
                 </button>
-                <button id="obj_id" class="btn pull-right">
+                <button id="top-nav-button-refresh" class="btn pull-left">
                     Refresh
+                </button>
+                <button id="top-nav-button-next" class="btn pull-right navigate-right icon icon-pages">
+                    Next
+                </button>
+                <button id="top-nav-button-previous" class="btn pull-right navigate-left media-object icon icon-pages">
+                    Previous
                 </button>
                 <h1>Mobile Booru</h1>
             </header>
@@ -77,12 +86,16 @@
             <div id="debug-app">
                 <ul id="oop-test-01" class="oop-test-01 table-view content-padded"></ul>
             </div>
-        </div>
 
+<!--             <div class="bar bar-standard bar-footer">
+              <a class="icon icon-compose pull-left"></a>
+              <a class="icon icon-gear pull-right"></a>
+            </div>
+ -->
+        </div>
+        <script type="text/javascript" src="js/kuroapp.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="lib/handlebars-v4.0.5.js"></script>
-        <script type="text/javascript" src="lib/jquery-3.1.0.js"></script>
 
     </body>
 </html>

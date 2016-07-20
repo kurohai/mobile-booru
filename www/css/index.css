@@ -84,6 +84,16 @@ body {
 
 #image-app {
     display: none;
+    /*margin-bottom: 50px;*/
+    flex-shrink:0;
+}
+
+#deviceListRatchet {
+    flex-shrink:0;
+    overflow: visible;
+    padding: 0px;
+    margin: 0px;
+
 }
 
 #debug-app {
@@ -170,10 +180,11 @@ li {
     /*max-height:100%;*/
 }
 
-/*.image-thumb {
-    margin: 0;
-    padding: 0;
-    justify-content: left;
-    align-items: left;
+.bar-footer {
+    position: fixed;
+    /*margin: 0px;*/
+    /*overflow: visible;*/
+    margin-top: 50px;
+
+
 }
-*/
