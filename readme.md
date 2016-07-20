@@ -2,6 +2,9 @@
 
 ## To-Do
 
+1. find a way to handle videos
+1. add swipe for paging on main page
+1. add swipe for next image
 1. [check out ratchet how-to](http://goratchet.com/getting-started/)
     1. everything in .content
     1. nav bars in .bar
@@ -15,10 +18,6 @@
     1. try with fixed width and retain ratio
     1. try with ratchet `table-view-row`
 1. reflow main page thumbs into grid 3x6
-1. refresh main page function
-    1. remove all images from main page
-    1. populate with most recent thumbs
-1. add swipe for page change
 1. create model for json responses
     1. one for each api type
     1. Zenbooru (全ボール) is a client for image boards implementing the Gelbooru v0.2, Danbooru (v1 & v2) and Moebooru APIs and supporting booru.org sites.
@@ -35,6 +34,10 @@
 ### Done
 
 1. change .app width in css
+1. add swipe for paging on main page
+1. refresh main page function
+    1. remove all images from main page
+    1. populate with most recent thumbs
 
 
 
