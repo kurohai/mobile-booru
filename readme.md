@@ -21,10 +21,16 @@
 1. add swipe for page change
 1. create model for json responses
     1. one for each api type
+    1. Zenbooru (全ボール) is a client for image boards implementing the Gelbooru v0.2, Danbooru (v1 & v2) and Moebooru APIs and supporting booru.org sites.
+    - Gelbooru v0.2
+    - Danbooru (v1 & v2)
+    - Moebooru
+    - booru.org
 1. create settings page
 1. add base url change option in settings
 1. add api type selection in settings
 1. add user login
+1.
 
 ### Done
 
@@ -38,6 +44,14 @@
 
 A small booru image viewer. Supports any danbooru forked image board with json api.
 
+
+
+
+
+
+
+
+# Old Readme
 
 ## To-Do
 
