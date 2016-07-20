@@ -22,9 +22,6 @@ var kuroapp = {
         // bind events
         document.getElementById("top-nav-button-home").addEventListener("click", kuroapp.activateMainApp, false);
         document.getElementById("top-nav-button-refresh").addEventListener("click", kuroapp.refreshMainPage, false);
-        // document.getElementById("activate-main").addEventListener("click", kuroapp.activateMainApp, false);
-        // document.getElementById("activate-scan").addEventListener("click", kuroapp.activateImageApp, false);
-        // document.getElementById("activate-debug").addEventListener("click", kuroapp.activateDebugApp, false);
         kuroapp.activateMainApp();
     },
 
@@ -218,13 +215,19 @@ var kuroapp = {
         $("#activate-debug").removeClass("active");
 
         // setup paging buttons for next
-        document.getElementById("top-nav-button-next").addEventListener("click", kuroapp.pagingNextMain, false);
         document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextImage, false);
-
+        document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextMain, false);
+        document.getElementById("top-nav-button-next").addEventListener("click", kuroapp.pagingNextMain, false);
+        kuroapp.log("all next buttons complete");
         // setup paging buttons for previous
-        document.getElementById("top-nav-button-previous").addEventListener("click", kuroapp.pagingPreviousMain, false);
         document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousImage, false);
+        document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousMain, false);
+        document.getElementById("top-nav-button-previous").addEventListener("click", kuroapp.pagingPreviousMain, false);
+        kuroapp.log("all previous buttons complete")
+
         document.addEventListener("backbutton", kuroapp.onBackKeyDownMainScreen, false);
+        kuroapp.log("all hardware buttons complete")
+
 
     },
 
@@ -240,14 +243,13 @@ var kuroapp = {
 
         // setup paging buttons for next
         document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextMain, false);
+        document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextImage, false);
         document.getElementById("top-nav-button-next").addEventListener("click", kuroapp.pagingNextImage, false);
 
         // setup paging buttons for previous
         document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousMain, false);
+        document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousImage, false);
         document.getElementById("top-nav-button-previous").addEventListener("click", kuroapp.pagingPreviousImage, false);
-
-        // document.getElementById("top-nav-button-previous").addEventListener("click", kuroapp.pagingPreviousMain, false);
-
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownImageScreen, false);
     },

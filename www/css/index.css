@@ -45,10 +45,10 @@ body {
     height: 100%;
     margin: 0px;
     padding-top: 10px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     width: 100%;
     text-align: center;
-    padding-bottom:120px;
+    padding-bottom: 50px;
 
 }
 
