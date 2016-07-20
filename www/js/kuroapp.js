@@ -11,6 +11,7 @@ var kuroapp = {
 
         this.bindEvents();
         this.log("KuroApp initialized!");
+        this.settings = {};
     },
 
     bindEvents: function() {
