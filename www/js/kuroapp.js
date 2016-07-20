@@ -60,23 +60,15 @@ var kuroapp = {
             if (r.id == kuroapp.current_image) {
                 kuroapp.log("found image: " + r.id);
                 var c = i + 1;
-
                 var target = kuroapp.current_results[c];
-                // kuroapp.log("trying target: " + target.id);
-
                 if (target === undefined) {
                     kuroapp.log("image on next page");
 
                     kuroapp.url_queries.page++;
                     kuroapp.updateCurrentPath();
                     kuroapp.get_callback = kuroapp.update_image;
+                    kuroapp.update_image_val = 0;
                     kuroapp.get(kuroapp.current_path);
-                    // kuroapp.pagingNextImage();
-                    // kuroapp.derpHardre();
-                    // kuroapp.log("length of data: " + kuroapp.current_results.length);
-                    // target = kuroapp.current_results[0];
-                    // kuroapp.log("next image: " + target.id);
-                    // kuroapp.loadFullImage(target);
                     break;
 
 
@@ -91,8 +83,8 @@ var kuroapp = {
         };
     },
 
-    update_image: function() {
-        var target = kuroapp.current_results[0];
+    update_image: function(val) {
+        var target = kuroapp.current_results[kuroapp.update_image_val];
         kuroapp.loadFullImage(target);
     },
 
@@ -100,15 +92,31 @@ var kuroapp = {
         kuroapp.log("getting previous image");
         kuroapp.log("current image: " + kuroapp.current_image);
 
-        for( var i = 0; i < kuroapp.current_results.length; i++) {
+        for( var i = 0; i <= kuroapp.current_results.length; i++) {
             var r = kuroapp.current_results[i];
-            // kuroapp.log(r.id);
             if (r.id == kuroapp.current_image) {
                 kuroapp.log("found image: " + r.id);
-                var target_image = i--;
-                kuroapp.log("previous image: " + kuroapp.current_results[target_image--].id);
+                var c = i - 1;
+                var target = kuroapp.current_results[c];
+                if (target === undefined) {
+                    kuroapp.log("image on next page");
 
-                kuroapp.loadFullImage(kuroapp.current_results[target_image--]);
+                    kuroapp.url_queries.page--;
+                    kuroapp.updateCurrentPath();
+                    kuroapp.get_callback = kuroapp.update_image;
+                    kuroapp.update_image_val = kuroapp.current_results.length - 1;
+
+                    kuroapp.get(kuroapp.current_path);
+                    break;
+
+
+                } else {
+                    kuroapp.log("next image: " + target.id);
+                    kuroapp.loadFullImage(target);
+                    break;
+
+
+                };
             };
         };
     },
