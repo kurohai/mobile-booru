@@ -98,17 +98,10 @@ body {
 .bar-tab {
     margin-top:  55px;
 }
-
-.fuckingTable {
-    test-align:  center;
-    width: 50%;
-    margin-left: 25%;
+.hidden {
+    display: none;
 }
 
-/*#obj_id {
-    margin-bottom: 10%;
-}
-*/
 h1 {
     font-size: 24px;
     font-weight: normal;
@@ -166,7 +159,7 @@ li {
     display:flex;
     justify-content:center;
     align-items:center;
-    overflow:hidden
+    overflow:hidden;
 }
 
 .fill img {
@@ -175,7 +168,6 @@ li {
     min-height:100%;
     /*max-width:100%;*/
     /*max-height:100%;*/
-
 }
 
 /*.image-thumb {

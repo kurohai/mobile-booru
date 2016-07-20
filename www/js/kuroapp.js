@@ -38,9 +38,9 @@ var kuroapp = {
     },
 
     get: function(url) {
+        kuroapp.log("making get request");
         $.get(url, kuroapp.onGetSuccess);
-        kuroapp.log("starting get request");
-        kuroapp.log("get request done?");
+        kuroapp.log("get request done");
     },
 
     onGetSuccess: function(data) {
@@ -71,14 +71,23 @@ var kuroapp = {
         return kuroapp.base_url + path;
     },
 
+    updateReferrer: function() {
+        referrer = document.referrer;
+        kuroapp.log("my original referrer " + referrer);
+        document.referrer = "";
+        kuroapp.log("my new referrer " + document.referrer);
+
+    },
+
     loadFullImage: function(imageData) {
         imageData.url = kuroapp.formatFullURL(imageData.file_url)
+        kuroapp.updateReferrer();
         kuroapp.log("loading full image for {{id}}".replace("{{id}}", imageData.id));
-        var newImage = '<img id="img-{{id}}" src="{{file_url}}" alt="use id here later" />'
+        var newImage = '<img id="img-{{id}}" class="hidden" src="{{file_url}}" alt="use id here later" />'
         var imageLine = newImage.replace("{{file_url}}", imageData.url);
         imageLine = imageLine.replace("{{id}}", imageData.id);
         kuroapp.log("full image loading " + imageData.url);
-        // $("#deviceListRatchet").append(imageLine);
+        $("#deviceListRatchet").append(imageLine);
         // $("#img-" + imageData.id).css("back")
         // kuroapp.doStuffWithImage(imageData);
         kuroapp.setBackroundImage(imageData);
@@ -92,24 +101,7 @@ var kuroapp = {
         // $("#img-" + imageData.id).css('background-image', 'url(' + imageData.url + ')');
         // $("#img-" + imageData.id).css('background-repeat', 'no-repeat');
         // $("#img-" + imageData.id).css('background-size', 'contain');
-        // background-image: url("path/to/img");
-        // background-repeat: no-repeat;
-        // background-size: contain;
 
-
-    },
-
-    doStuffWithImage: function(imageData) {
-        kuroapp.log("doing stuff with image " + imageData.url);
-        var myScroll;
-        options = {
-            zoom: true,
-            scrollX: true,
-            scrollY: true,
-            mouseWheel: true,
-            wheelAction: 'zoom'
-        };
-        myScroll = new IScroll('.iscroll-wrapper', options);
     },
 
     activateMainApp: function() {
@@ -118,6 +110,7 @@ var kuroapp = {
         kuroapp.screenMain.setAttribute('style', 'display: block;');
         kuroapp.screenScan.setAttribute('style', 'display: none;');
         kuroapp.screenDebug.setAttribute('style', 'display: none;');
+        $(".app").css('background-image', 'none');
         $("#activate-main").addClass("active");
         $("#activate-scan").removeClass("active");
         $("#activate-debug").removeClass("active");
@@ -140,6 +133,7 @@ var kuroapp = {
         kuroapp.screenMain.setAttribute('style', 'display: none;');
         kuroapp.screenScan.setAttribute('style', 'display: none;');
         kuroapp.screenDebug.setAttribute('style', 'display: block;');
+        $(".app").css('background-image', 'none');
         $("#activate-main").removeClass("active");
         $("#activate-scan").removeClass("active");
         $("#activate-debug").addClass("active");
