@@ -58,7 +58,7 @@ body {
     width: 100%;                   /* text area width */
     text-align: center;
     /*margin-left: 10%;*/
-    margin-top: 110px;
+    margin-top: 45px;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
     margin-bottom:120px;
@@ -95,6 +95,7 @@ body {
     margin: 0px;
 
 }
+
 
 #debug-app {
     display: none;

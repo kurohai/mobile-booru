@@ -22,9 +22,9 @@ var kuroapp = {
         // bind events
         document.getElementById("top-nav-button-home").addEventListener("click", kuroapp.activateMainApp, false);
         document.getElementById("top-nav-button-refresh").addEventListener("click", kuroapp.refreshMainPage, false);
-        document.getElementById("activate-main").addEventListener("click", kuroapp.activateMainApp, false);
-        document.getElementById("activate-scan").addEventListener("click", kuroapp.activateImageApp, false);
-        document.getElementById("activate-debug").addEventListener("click", kuroapp.activateDebugApp, false);
+        // document.getElementById("activate-main").addEventListener("click", kuroapp.activateMainApp, false);
+        // document.getElementById("activate-scan").addEventListener("click", kuroapp.activateImageApp, false);
+        // document.getElementById("activate-debug").addEventListener("click", kuroapp.activateDebugApp, false);
         kuroapp.activateMainApp();
     },
 
