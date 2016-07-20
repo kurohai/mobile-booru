@@ -133,13 +133,13 @@ var kuroapp = {
         $("#oop-test-01").append(template.replace("{{text}}", logString));
     },
 
-    post: function(url) {
-        $.post(url, kuroapp.onPostSuccess);
-    },
+    // post: function(url) {
+    //     $.post(url, kuroapp.onPostSuccess);
+    // },
 
-    onPostSuccess: function(data) {
-        kuroapp.log("Post result: " + JSON.stringify(data));
-    },
+    // onPostSuccess: function(data) {
+    //     kuroapp.log("Post result: " + JSON.stringify(data));
+    // },
 
     get: function(url) {
         kuroapp.log("making get request");
@@ -160,23 +160,51 @@ var kuroapp = {
         for( var i = 0; i < data.length; i++) {
             var d = data[i];
             kuroapp.log(d.id);
-            kuroapp.updateImageList(d);
+            kuroapp.updateImageList(d, i);
         };
+
+        // forEach example use
+        // data.forEach(function(d) {
+        //     kuroapp.log("inside forEach loop hanging out with my buddy " + d.id);
+        // });
     },
 
     refreshMainPage: function() {
         $("#imageListMain").empty();
         kuroapp.get(kuroapp.current_path);
         kuroapp.activateMainApp();
+        $$('#imageListMain').style('display', 'none');
+
     },
 
-    updateImageList: function(imageData) {
-        kuroapp.log("adding {{id}} to imageListMain".replace("{{id}}", imageData.id));
-        var newImage = '<img id="{{id}}" src="{{preview_url}}" alt="use id here later" />'
-        var imageLine = newImage.replace("{{preview_url}}", kuroapp.formatFullURL(imageData.preview_file_url));
+    updateImageList: function(imageData, counter) {
+        counter = counter || 0;
+        kuroapp.log("counter: " + counter);
+        // var kuroapp.divHolder;
+        var newImage;
+        var imageLine, divid;
+        newImage = '<img id="{{id}}" class="img-line" src="{{preview_url}}" alt="use id here later" />'
+        imageLine = newImage.replace("{{preview_url}}", kuroapp.formatFullURL(imageData.preview_file_url));
         imageLine = imageLine.replace("{{id}}", imageData.id);
-        $("#imageListMain").append(imageLine);
-        document.getElementById(imageData.id).addEventListener("click", kuroapp.loadFullImage.bind(null, imageData), false);
+
+        if (counter % 2 == 0) {
+            kuroapp.log("counter mod 0");
+            kuroapp.divHolder = "<div id='{{divid}}'>{{img-01}}</div>";
+            kuroapp.divHolder = kuroapp.divHolder.replace("{{img-01}}", imageLine);
+            kuroapp.divHolder = kuroapp.divHolder.replace("{{divid}}", "img-div-" + counter);
+            $("#imageListMain").append(kuroapp.divHolder);
+            document.getElementById(imageData.id).addEventListener("click", kuroapp.loadFullImage.bind(null, imageData), false);
+
+
+        } else {
+            kuroapp.divHolder = kuroapp.divHolder.replace("{{img-02}}", imageLine);
+            c = counter-1;
+            divid = "#img-div-" + c;
+            kuroapp.log("appending image to div: " + divid);
+            $(divid).append(imageLine);
+            document.getElementById(imageData.id).addEventListener("click", kuroapp.loadFullImage.bind(null, imageData), false);
+
+        };
     },
 
     formatFullURL: function(path) {
@@ -191,7 +219,7 @@ var kuroapp = {
         var imageLine = newImage.replace("{{file_url}}", imageData.url);
         imageLine = imageLine.replace("{{id}}", imageData.id);
         kuroapp.log("full image loading " + imageData.url);
-        $("#deviceListRatchet").append(imageLine);
+        $("#image-view").append(imageLine);
         kuroapp.setBackroundImage(imageData);
         kuroapp.current_image = imageData.id;
     },
@@ -227,6 +255,13 @@ var kuroapp = {
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownMainScreen, false);
         kuroapp.log("all hardware buttons complete")
+
+        $$("#activate-main").on("swipeLeft", function() {
+            kuroapp.log("received swipeLeft");
+        });
+        // $$("#activate-main").on("swipeLeft", kuroapp.pagingNextMain);
+        // $$("#activate-main").swipe(kuroapp.pagingNextMain);
+
 
 
     },

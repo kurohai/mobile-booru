@@ -93,7 +93,17 @@ body {
     overflow: visible;
     padding: 0px;
     margin: 0px;
+    width: 100%;
 
+}
+.img-div {
+    width: 100%;
+}
+
+.img-line {
+    width: 40%;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 
