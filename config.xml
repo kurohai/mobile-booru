@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.kurohai.mobilebooru" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>MobileBooru</name>
+    <name>Mobile Booru</name>
     <description>
         A small *booru image board viewer.
     </description>
