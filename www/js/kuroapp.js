@@ -2,6 +2,7 @@ var kuroapp = {
     init: function() {
         this.base_url = "http://danbooru.donmai.us";
         this.path = "/posts.json";
+        this.path_tags = "/tags.json";
         this.url_queries = {};
         this.url_queries.limit = "18";
         this.url_queries.page = 1;
@@ -20,6 +21,10 @@ var kuroapp = {
 
     bindEvents: function() {
         // bind events
+
+        $(".tag-search-form").on("submit", function() {
+            kuroapp.updateRefresh();
+        });
 
         // set some dom obj variables
         var homeButton = document.getElementById("top-nav-button-home"),
@@ -243,12 +248,28 @@ var kuroapp = {
         };
     },
 
-    updateCurrentPath: function() {
+    updateCurrentPath: function(query) {
+        var query = query || "*";
+        query = $(".tag-input").val();
         var url_limit = "limit=" + kuroapp.url_queries.limit;
         var url_page = "page=" + kuroapp.url_queries.page;
-        kuroapp.current_path = kuroapp.base_url + kuroapp.path;
-        kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
-        kuroapp.current_path = kuroapp.current_path + "&" + url_page;
+        var tag_search = "tags=" + query;
+        kuroapp.url_queries.tags = true
+        // path = "/tags.json"
+         // /tags.json?search[name_matches]=a*.
+        if (typeof kuroapp.url_queries.tags != "undefined") {
+            kuroapp.current_path = kuroapp.base_url + kuroapp.path;
+            kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
+            kuroapp.current_path = kuroapp.current_path + "&" + url_page;
+            kuroapp.current_path = kuroapp.current_path + "&" + tag_search;
+        } else {
+            kuroapp.current_path = kuroapp.base_url + kuroapp.path;
+            kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
+            kuroapp.current_path = kuroapp.current_path + "&" + url_page;
+
+        }
+
+        kuroapp.log("updated url: " + kuroapp.current_path);
     },
 
     log: function(logString) {
@@ -288,8 +309,6 @@ var kuroapp = {
             kuroapp.log(d.id);
             kuroapp.updateImageList(d, i);
         };
-        // kuroapp.activateMainApp();
-        // kuroapp.activateImageApp();
 
         // forEach example use
         // data.forEach(function(d) {

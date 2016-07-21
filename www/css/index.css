@@ -123,6 +123,15 @@ body {
     display: none;
 }
 
+.settings-view {
+    width:50%;
+    margin-left: 25%;
+
+}
+.tag-input {
+    width:50%;
+}
+
 .title {
     text-align: center;
 }
