@@ -20,8 +20,131 @@ var kuroapp = {
 
     bindEvents: function() {
         // bind events
-        document.getElementById("top-nav-button-home").addEventListener("click", kuroapp.activateMainApp, false);
-        document.getElementById("top-nav-button-refresh").addEventListener("click", kuroapp.refreshMainPage, false);
+
+        // set some dom obj variables
+        var homeButton = document.getElementById("top-nav-button-home"),
+        refreshButton = document.getElementById("top-nav-button-refresh"),
+        settingsButton = document.getElementById("top-nav-button-settings"),
+        previousButton = document.getElementById("top-nav-button-previous"),
+        nextButton = document.getElementById("top-nav-button-next");
+
+        kuroapp.mcButtonHome = new Hammer(homeButton);
+        kuroapp.mcButtonRefresh = new Hammer(refreshButton);
+        kuroapp.mcButtonSettings = new Hammer(settingsButton);
+
+        // previous button setup main
+        kuroapp.mcButtonPreviousPage = new Hammer.Manager(previousButton);
+        kuroapp.mcButtonPreviousPage.add(new Hammer.Tap({ enable: true }));
+
+        // previous button setup image
+        kuroapp.mcButtonPreviousImage = new Hammer.Manager(previousButton);
+        kuroapp.mcButtonPreviousImage.add(new Hammer.Tap({ enable: false }));
+
+        // next button setup main
+        kuroapp.mcButtonNextPage = new Hammer.Manager(nextButton);
+        kuroapp.mcButtonNextPage.add(new Hammer.Tap({ enable: true }));
+
+        // next button setup image
+        kuroapp.mcButtonNextImage = new Hammer.Manager(nextButton);
+        kuroapp.mcButtonNextImage.add(new Hammer.Tap({ enable: false }));
+
+        // event setup
+        kuroapp.mcButtonHome.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on home button.");
+            kuroapp.activateMainApp();
+        });
+
+        kuroapp.mcButtonRefresh.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on refresh button.");
+            kuroapp.refreshMainPage();
+        });
+
+        kuroapp.mcButtonSettings.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on settings button.");
+            kuroapp.activateDebugApp();
+        });
+
+        kuroapp.mcButtonPreviousPage.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on main previous button.");
+            kuroapp.pagingPreviousMain();
+        });
+
+        kuroapp.mcButtonPreviousImage.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on image previous button.");
+            kuroapp.pagingPreviousImage();
+        });
+
+        kuroapp.mcButtonNextPage.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on next button.");
+            kuroapp.pagingNextMain();
+        });
+
+        kuroapp.mcButtonNextImage.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on next button.");
+            kuroapp.pagingNextImage();
+        });
+
+        // swipe setup on image
+        kuroapp.mcSwipeNextImage = new Hammer.Manager(kuroapp.screenImage);
+        kuroapp.mcSwipeNextImage.add(new Hammer.Swipe({enable: true}));
+
+        kuroapp.mcSwipeNextImage.on("swipeleft", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on image.");
+            kuroapp.pagingNextImage();
+        });
+
+        kuroapp.mcSwipePreviousImage = new Hammer.Manager(kuroapp.screenImage);
+        kuroapp.mcSwipePreviousImage.add(new Hammer.Swipe({enable: true}));
+
+        kuroapp.mcSwipePreviousImage.on("swiperight", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on image.");
+            kuroapp.pagingPreviousImage();
+        });
+
+
+        // swipe setup on main page
+        kuroapp.mcSwipeNextPage = new Hammer.Manager(kuroapp.screenMain);
+        kuroapp.mcSwipeNextPage.add(new Hammer.Swipe({enable: true}));
+
+        kuroapp.mcSwipeNextPage.on("swipeleft", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on image.");
+            kuroapp.pagingNextMain();
+        });
+
+        kuroapp.mcSwipePreviousPage = new Hammer.Manager(kuroapp.screenMain);
+        kuroapp.mcSwipePreviousPage.add(new Hammer.Swipe({enable: true}));
+
+        kuroapp.mcSwipePreviousPage.on("swiperight", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on image.");
+            kuroapp.pagingPreviousMain();
+        });
+
+
+
+
+
+        // $$("#main-app").swipeLeft(function(e) {
+        //     kuroapp.log("received left swipe");
+        //     kuroapp.pagingNextMain();
+        //     // e.originalEvent.preventDefault();
+        // });
+        // $$("#main-app").swipeRight(function(e) {
+        //     kuroapp.log("received right swipe");
+        //     kuroapp.pagingPreviousMain();
+        //     // e.originalEvent.preventDefault();
+        // });
+        // $$(".div-img-line").swipeLeft(function(e) {
+        //     kuroapp.log("received right swipe on image");
+        //     kuroapp.pagingNextMain();
+        //     // e.originalEvent.preventDefault();
+        // });
+        // $$(".div-img-line").swipeRight(function(e) {
+        //     kuroapp.log("received right swipe on image");
+        //     kuroapp.pagingPreviousMain();
+        //     // e.originalEvent.preventDefault();
+        // });
+
+
         kuroapp.activateMainApp();
     },
 
@@ -44,7 +167,9 @@ var kuroapp = {
     pagingPreviousMain: function() {
         // next page of image thumbs
         kuroapp.log("getting previous page of image results for main");
-        kuroapp.url_queries.page--;
+        if (kuroapp.url_queries.page > 1) {
+            kuroapp.url_queries.page--;
+        };
         kuroapp.updateRefresh();
     },
 
@@ -173,8 +298,9 @@ var kuroapp = {
         $("#imageListMain").empty();
         kuroapp.get(kuroapp.current_path);
         kuroapp.activateMainApp();
-        $$('#imageListMain').style('display', 'none');
-
+        // $$('#main-app').on("swipeLeft", kuroapp.pagingNextMain);
+        // $$('#main-app').on("tap touch swipeLeft", kuroapp.pagingNextMain);
+        // $$('#main-app').style('background-size', '100%');
     },
 
     updateImageList: function(imageData, counter) {
@@ -189,12 +315,17 @@ var kuroapp = {
 
         if (counter % 2 == 0) {
             kuroapp.log("counter mod 0");
-            kuroapp.divHolder = "<div id='{{divid}}'>{{img-01}}</div>";
+            kuroapp.divHolder = "<div id='{{divid}}' class='div-img-line'>{{img-01}}</div>";
             kuroapp.divHolder = kuroapp.divHolder.replace("{{img-01}}", imageLine);
             kuroapp.divHolder = kuroapp.divHolder.replace("{{divid}}", "img-div-" + counter);
             $("#imageListMain").append(kuroapp.divHolder);
-            document.getElementById(imageData.id).addEventListener("click", kuroapp.loadFullImage.bind(null, imageData), false);
 
+            // setup image tap event for full image
+            mcImage = Hammer(document.getElementById(imageData.id));
+            mcImage.on("tap press", function(ev) {
+                kuroapp.log(ev.type + " gesture detected on image.");
+                kuroapp.loadFullImage(imageData);
+            });
 
         } else {
             kuroapp.divHolder = kuroapp.divHolder.replace("{{img-02}}", imageLine);
@@ -202,7 +333,12 @@ var kuroapp = {
             divid = "#img-div-" + c;
             kuroapp.log("appending image to div: " + divid);
             $(divid).append(imageLine);
-            document.getElementById(imageData.id).addEventListener("click", kuroapp.loadFullImage.bind(null, imageData), false);
+
+            mcImage = Hammer(document.getElementById(imageData.id));
+            mcImage.on("tap press", function(ev) {
+                kuroapp.log(ev.type + " gesture detected on image.");
+                kuroapp.loadFullImage(imageData);
+            });
 
         };
     },
@@ -222,6 +358,13 @@ var kuroapp = {
         $("#image-view").append(imageLine);
         kuroapp.setBackroundImage(imageData);
         kuroapp.current_image = imageData.id;
+
+
+        // $$("#image-view").swipeLeft(kuroapp.pagingNextImage);
+        // $$("#image-view").swipeRight(kuroapp.pagingPreviousImage);
+        // $$("#top-nav-button-next").touch(kuroapp.pagingNextImage);
+        // $$("#top-nav-button-previous").touch(kuroapp.pagingPreviousImage);
+
     },
 
     setBackroundImage: function(imageData) {
@@ -238,31 +381,28 @@ var kuroapp = {
         kuroapp.screenImage.setAttribute('style', 'display: none;');
         kuroapp.screenDebug.setAttribute('style', 'display: none;');
         $(".app").css('background-image', 'none');
-        $("#activate-main").addClass("active");
-        $("#activate-scan").removeClass("active");
-        $("#activate-debug").removeClass("active");
+
+
+        kuroapp.mcButtonPreviousPage.get('tap').set({ enable: true });
+        kuroapp.mcButtonNextPage.get('tap').set({ enable: true });
+
+        kuroapp.mcButtonPreviousImage.get('tap').set({ enable: false });
+        kuroapp.mcButtonNextImage.get('tap').set({ enable: false });
+
 
         // setup paging buttons for next
-        document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextImage, false);
-        document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextMain, false);
-        document.getElementById("top-nav-button-next").addEventListener("click", kuroapp.pagingNextMain, false);
+        // document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextImage, false);
+        // document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextMain, false);
+        // document.getElementById("top-nav-button-next").addEventListener("click", kuroapp.pagingNextMain, false);
         kuroapp.log("all next buttons complete");
         // setup paging buttons for previous
-        document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousImage, false);
-        document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousMain, false);
-        document.getElementById("top-nav-button-previous").addEventListener("click", kuroapp.pagingPreviousMain, false);
+        // document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousImage, false);
+        // document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousMain, false);
+        // document.getElementById("top-nav-button-previous").addEventListener("click", kuroapp.pagingPreviousMain, false);
         kuroapp.log("all previous buttons complete")
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownMainScreen, false);
         kuroapp.log("all hardware buttons complete")
-
-        $$("#activate-main").on("swipeLeft", function() {
-            kuroapp.log("received swipeLeft");
-        });
-        // $$("#activate-main").on("swipeLeft", kuroapp.pagingNextMain);
-        // $$("#activate-main").swipe(kuroapp.pagingNextMain);
-
-
 
     },
 
@@ -272,19 +412,34 @@ var kuroapp = {
         kuroapp.screenMain.setAttribute('style', 'display: none;');
         kuroapp.screenImage.setAttribute('style', 'display: block;');
         kuroapp.screenDebug.setAttribute('style', 'display: none;');
-        $("#activate-main").removeClass("active");
-        $("#activate-scan").addClass("active");
-        $("#activate-debug").removeClass("active");
+
+
+        // stop hammer for main
+        kuroapp.mcButtonPreviousPage.get('tap').set({ enable: false });
+        kuroapp.mcButtonNextPage.get('tap').set({ enable: false });
+
+        // start hammer for image
+        kuroapp.mcButtonPreviousImage.get('tap').set({ enable: true });
+        kuroapp.mcButtonNextImage.get('tap').set({ enable: true });
+
+        // start swipe on image
+        // kuroapp.mcSwipeNextImage.get('swipe').set({ enable: true });
+        // kuroapp.mcSwipePreviousImage.get('swipe').set({ enable: true });
+
+
+
+        // start hammer for image
+
 
         // setup paging buttons for next
-        document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextMain, false);
-        document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextImage, false);
-        document.getElementById("top-nav-button-next").addEventListener("click", kuroapp.pagingNextImage, false);
+        // document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextMain, false);
+        // document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextImage, false);
+        // document.getElementById("top-nav-button-next").addEventListener("click", kuroapp.pagingNextImage, false);
 
         // setup paging buttons for previous
-        document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousMain, false);
-        document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousImage, false);
-        document.getElementById("top-nav-button-previous").addEventListener("click", kuroapp.pagingPreviousImage, false);
+        // document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousMain, false);
+        // document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousImage, false);
+        // document.getElementById("top-nav-button-previous").addEventListener("click", kuroapp.pagingPreviousImage, false);
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownImageScreen, false);
     },
@@ -305,9 +460,9 @@ var kuroapp = {
         kuroapp.screenImage.setAttribute('style', 'display: none;');
         kuroapp.screenDebug.setAttribute('style', 'display: block;');
         $(".app").css('background-image', 'none');
-        $("#activate-main").removeClass("active");
-        $("#activate-scan").removeClass("active");
-        $("#activate-debug").addClass("active");
+        // $("#activate-main").removeClass("active");
+        // $("#activate-scan").removeClass("active");
+        // $("#activate-debug").addClass("active");
     },
 
 };
