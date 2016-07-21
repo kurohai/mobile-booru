@@ -4,6 +4,8 @@
     <description>
         A small *booru image board viewer.
     </description>
+    <icon src="www/img/logo-oval-white-on-blue.png" />
+
     <author email="kurohai@gmail.com" href="http://kurohai.com">
         Kurohai
     </author>
