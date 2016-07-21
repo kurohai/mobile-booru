@@ -1,6 +1,6 @@
 var kuroapp = {
     init: function() {
-        this.base_url = "http://danbooru.donmai.us";
+        this.base_url = "https://booru.room208.org";
         this.path = "/posts.json";
         this.path_tags = "/tags.json";
         this.url_queries = {};
