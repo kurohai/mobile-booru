@@ -4,13 +4,15 @@
 
 A small booru image viewer. Supports any danbooru forked image board with json api.
 
+## Release 0.1.0 Beta
+
+[Mobile Booru v0.1.0 Beta](./build/com.kurohai.mobilebooru.apk)
 
 ## To-Do
 
 
 ### Version 0.1.0
 
-1. Create new logo and icons
 1. change default baseurl to SFW booru
 1. add base url change option in settings
 1. release version 0.1.0
@@ -53,6 +55,7 @@ A small booru image viewer. Supports any danbooru forked image board with json a
 1. add swipe for paging on main page
 1. add swipe for next image
 1. reflow main page thumbs into grid 3x6
+1. Create new logo and icons
 
 
 
