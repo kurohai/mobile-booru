@@ -279,6 +279,7 @@ var kuroapp = {
 
         if (typeof kuroapp.get_callback != 'undefined') {
             kuroapp.get_callback();
+            kuroapp.get_callback = undefined;
         };
 
         kuroapp.log("current data len: " + data.length);
@@ -287,6 +288,8 @@ var kuroapp = {
             kuroapp.log(d.id);
             kuroapp.updateImageList(d, i);
         };
+        // kuroapp.activateMainApp();
+        // kuroapp.activateImageApp();
 
         // forEach example use
         // data.forEach(function(d) {
