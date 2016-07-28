@@ -47,7 +47,7 @@
         <div class="app">
             <header class="bar bar-nav">
                 <button id="top-nav-button-home" class="btn pull-left">
-                    Home
+                    Main
                 </button>
                 <button id="top-nav-button-refresh" class="btn pull-left">
                     Refresh
@@ -74,11 +74,29 @@
             </div>
 
             <div id="debug-app">
-                <div class="settings-view">
-                    <form id="tag-search-form" class="tag-search-form" action="#">
-                        <input class="tag-input" type="search" placeholder="Enter tags seperated by space." />
-                        <button id="tag-input-submit" class="btn">Search</button>
+                <div class="settings-view content-padded">
+
+                    <form class="tag-search-form" action="#">
+                        <div class="tag-input-container">
+                            <input class="tag-input" type="search" placeholder="Enter tags" />
+                        </div>
+
+                        <div class="tag-submit-container">
+                            <button id="tag-input-submit" type="submit" class="btn">Search</button>
+                        </div>
                     </form>
+
+                    <form class="base-url-form" action="#">
+                        <div class="base-url-input-container">
+                            <h1 class="settings-label">Base URL</h1>
+                            <input class="base-url-input" type="search" placeholder="Base URL" />
+                        </div>
+
+                        <div class="base-url-submit-container">
+                            <button id="base-url-input-submit" type="submit" class="btn">Save Settings</button>
+                        </div>
+                    </form>
+
                 </div>
                 <ul id="oop-test-01" class="oop-test-01 table-view content-padded"></ul>
             </div>

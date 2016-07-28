@@ -74,9 +74,8 @@ body {
         height: 100%;
                                       /* offset horizontal:  half of image width and text area width */
     }
+
 }
-
-
 
 #main-app {
     display: block;
@@ -104,6 +103,7 @@ body {
     width: 100%;
 
 }
+
 .img-div {
     width: 100%;
 }
@@ -118,7 +118,6 @@ body {
     font-family: Ratchicons;
 }
 
-
 #debug-app {
     display: none;
 }
@@ -126,20 +125,47 @@ body {
 .settings-view {
     width:50%;
     margin-left: 25%;
-
 }
+
+.tag-input-container {
+    width: 80%;
+    overflow: hidden;
+    display:block;
+    float: left;
+}
+
+.tag-search-form {
+    display:inline;
+}
+
 .tag-input {
-    width:50%;
+    width:80%;
+    float: left;
+}
+
+#tag-input-submit {
+    float: right;
+    /*display:inline;*/
+}
+
+.tag-submit-container {
+    width:10%;
+    float:right;
+    display:block;
+}
+
+.settings-label {
+    float:left;
 }
 
 .title {
     text-align: center;
 }
 
-
 .bar-tab {
     margin-top:  55px;
 }
+
 .hidden {
     display: none;
 }
@@ -157,7 +183,6 @@ li {
     width:100%;
     font-weight: normal;
     overflow: visible;
-
 
 }
 
@@ -182,14 +207,20 @@ li {
 
 @keyframes fade {
     from { opacity:  1.0; }
+
     50% { opacity:  0.4; }
+
     to { opacity:  1.0; }
+
 }
 
 @-webkit-keyframes fade {
     from { opacity:  1.0; }
+
     50% { opacity:  0.4; }
+
     to { opacity:  1.0; }
+
 }
 
 .blink {
@@ -218,5 +249,5 @@ li {
     /*overflow: visible;*/
     margin-top: 50px;
 
-
 }
+

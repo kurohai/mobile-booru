@@ -26,6 +26,13 @@ var kuroapp = {
             kuroapp.updateRefresh();
         });
 
+        $(".base-url-input").val(kuroapp.base_url);
+
+        $(".base-url-form").on("submit", function() {
+            kuroapp.base_url = $(".base-url-input").val();
+            kuroapp.updateRefresh();
+        });
+
         // set some dom obj variables
         var homeButton = document.getElementById("top-nav-button-home"),
         refreshButton = document.getElementById("top-nav-button-refresh"),
