@@ -2,3 +2,5 @@ android/
 browser/
 plugins/
 *.keystore
+k-host-01.md
+*.json
