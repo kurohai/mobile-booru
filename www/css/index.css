@@ -7,7 +7,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * http: //www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -17,13 +17,13 @@
  * under the License.
  */
 * {
-    -webkit-tap-highlight-color:  rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
 }
 
 body {
-    -webkit-touch-callout:  none;                /* prevent callout to copy image, etc when tap to hold */
-    -webkit-text-size-adjust:  none;             /* prevent webkit from resizing text to fit */
-    -webkit-user-select:  text;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: text;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-color: #E4E4E4;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
@@ -44,12 +44,11 @@ body {
     font-size: 12px;
     height: 100%;
     margin: 0px;
-    padding-top: 10px;
+    /*padding-top: 10px;*/
     /*text-transform: uppercase;*/
     width: 100%;
     text-align: center;
-    padding-bottom: 50px;
-
+    /*padding-bottom: 50px;*/
 }
 
 /* Portrait layout (default) */
@@ -58,22 +57,31 @@ body {
     width: 100%;                   /* text area width */
     text-align: center;
     /*margin-left: 10%;*/
-    margin-top: 45px;
+    /*margin-top: 45px;*/
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
-    margin-bottom:120px;
+    margin-bottom: 120px;
 
-                                   /* offset horizontal:  half of text area width */
+                                   /* offset horizontal: half of text area width */
 }
 
 /* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio:  1/1) and (min-width: 400px) {
+@media screen and (min-aspect-ratio: 1/1) and (min-width: 400px) {
     .app {
         text-align: center;
         background-position: center;
         height: 100%;
-                                      /* offset horizontal:  half of image width and text area width */
+                                      /* offset horizontal: half of image width and text area width */
     }
+}
+
+.content {
+    margin-top: 50px;
+    width: 100%;
+    height: auto;
+    background-position: center;
+    /*overflow: scroll;*/
+    -webkit-overflow-scrolling: touch;
 
 }
 
@@ -84,24 +92,23 @@ body {
 #image-app {
     display: none;
     /*margin-bottom: 50px;*/
-    flex-shrink:0;
+    flex-shrink: 0;
     width: 100%;
-    height:100%;
+    height: 100%;
+    text-align: center;
 }
 
 #image-view {
     width: 100%;
-    height:100%;
-
+    height: 100%;
 }
 
 #deviceListRatchet {
-    flex-shrink:0;
+    flex-shrink: 0;
     overflow: visible;
     padding: 0px;
     margin: 0px;
     width: 100%;
-
 }
 
 .img-div {
@@ -123,39 +130,39 @@ body {
 }
 
 .settings-view {
-    width:50%;
+    width: 50%;
     margin-left: 25%;
 }
 
 .tag-input-container {
     width: 80%;
     overflow: hidden;
-    display:block;
+    display: block;
     float: left;
 }
 
 .tag-search-form {
-    display:inline;
+    display: inline;
 }
 
 .tag-input {
-    width:80%;
+    width: 80%;
     float: left;
 }
 
 #tag-input-submit {
     float: right;
-    /*display:inline;*/
+    /*display: inline;*/
 }
 
 .tag-submit-container {
-    width:10%;
-    float:right;
-    display:block;
+    width: 10%;
+    float: right;
+    display: block;
 }
 
 .settings-label {
-    float:left;
+    float: left;
 }
 
 .title {
@@ -163,7 +170,7 @@ body {
 }
 
 .bar-tab {
-    margin-top:  55px;
+    margin-top: 55px;
 }
 
 .hidden {
@@ -180,10 +187,9 @@ h1 {
 }
 
 li {
-    width:100%;
+    width: 100%;
     font-weight: normal;
     overflow: visible;
-
 }
 
 .event {
@@ -206,21 +212,19 @@ li {
 }
 
 @keyframes fade {
-    from { opacity:  1.0; }
+    from { opacity: 1.0; }
 
-    50% { opacity:  0.4; }
+    50% { opacity: 0.4; }
 
-    to { opacity:  1.0; }
-
+    to { opacity: 1.0; }
 }
 
 @-webkit-keyframes fade {
-    from { opacity:  1.0; }
+    from { opacity: 1.0; }
 
-    50% { opacity:  0.4; }
+    50% { opacity: 0.4; }
 
-    to { opacity:  1.0; }
-
+    to { opacity: 1.0; }
 }
 
 .blink {
@@ -229,18 +233,18 @@ li {
 }
 
 .fill {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .fill img {
-    flex-shrink:0;
-    min-width:100%;
-    min-height:100%;
-    /*max-width:100%;*/
-    /*max-height:100%;*/
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
+    /*max-width: 100%;*/
+    /*max-height: 100%;*/
 }
 
 .bar-footer {
@@ -248,6 +252,5 @@ li {
     /*margin: 0px;*/
     /*overflow: visible;*/
     margin-top: 50px;
-
 }
 

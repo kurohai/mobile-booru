@@ -17,6 +17,7 @@ var kuroapp = {
         this.bindEvents();
         this.log("KuroApp initialized!");
         this.settings = {};
+        this.refreshMainPage();
     },
 
     bindEvents: function() {
@@ -131,32 +132,6 @@ var kuroapp = {
             kuroapp.pagingPreviousMain();
         });
 
-
-
-
-
-        // $$("#main-app").swipeLeft(function(e) {
-        //     kuroapp.log("received left swipe");
-        //     kuroapp.pagingNextMain();
-        //     // e.originalEvent.preventDefault();
-        // });
-        // $$("#main-app").swipeRight(function(e) {
-        //     kuroapp.log("received right swipe");
-        //     kuroapp.pagingPreviousMain();
-        //     // e.originalEvent.preventDefault();
-        // });
-        // $$(".div-img-line").swipeLeft(function(e) {
-        //     kuroapp.log("received right swipe on image");
-        //     kuroapp.pagingNextMain();
-        //     // e.originalEvent.preventDefault();
-        // });
-        // $$(".div-img-line").swipeRight(function(e) {
-        //     kuroapp.log("received right swipe on image");
-        //     kuroapp.pagingPreviousMain();
-        //     // e.originalEvent.preventDefault();
-        // });
-
-
         kuroapp.activateMainApp();
     },
 
@@ -165,7 +140,6 @@ var kuroapp = {
         kuroapp.log("updating path and refreshing");
         kuroapp.updateCurrentPath();
         kuroapp.refreshMainPage();
-
     },
 
     pagingNextMain: function() {
@@ -264,7 +238,7 @@ var kuroapp = {
         kuroapp.url_queries.tags = true
         // path = "/tags.json"
          // /tags.json?search[name_matches]=a*.
-        if (typeof kuroapp.url_queries.tags != "undefined") {
+        if (typeof query != "undefined") {
             kuroapp.current_path = kuroapp.base_url + kuroapp.path;
             kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
@@ -397,9 +371,9 @@ var kuroapp = {
     },
 
     setBackroundImage: function(imageData) {
-        $(".app").css('background-image', 'url(' + imageData.url + ')');
-        $(".app").css('background-repeat', 'no-repeat');
-        $(".app").css('background-size', 'contain');
+        $(".content").css('background-image', 'url(' + imageData.url + ')');
+        $(".content").css('background-repeat', 'no-repeat');
+        $(".content").css('background-size', 'contain');
         kuroapp.activateImageApp();
     },
 
@@ -409,7 +383,7 @@ var kuroapp = {
         kuroapp.screenMain.setAttribute('style', 'display: block;');
         kuroapp.screenImage.setAttribute('style', 'display: none;');
         kuroapp.screenDebug.setAttribute('style', 'display: none;');
-        $(".app").css('background-image', 'none');
+        $(".content").css('background-image', 'none');
 
 
         kuroapp.mcButtonPreviousPage.get('tap').set({ enable: true });
