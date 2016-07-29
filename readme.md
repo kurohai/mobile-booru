@@ -1,5 +1,7 @@
 # Mobile Booru
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0371b7c4cd0c4aef996cd3000c8af753)](https://www.codacy.com/app/kurohai/mobile-booru?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kurohai/mobile-booru&amp;utm_campaign=Badge_Grade)
+
 ## Overview
 
 A small booru image viewer. Supports any danbooru forked image board with json api.
