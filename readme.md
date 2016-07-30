@@ -15,9 +15,7 @@ A small booru image viewer. Supports any danbooru forked image board with json a
 
 ### Version 0.1.1
 
-1. add baseurl setting
-1. add tag search setting
-1. add list images per page setting
+1. hashin!
 
 ### Later
 
@@ -57,3 +55,7 @@ A small booru image viewer. Supports any danbooru forked image board with json a
     1. [p2z in css3](http://stackoverflow.com/questions/10802176/pinch-to-zoom-with-css3)
     1. jquery mobile option
     1. [viewport docs](https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag)
+1. add baseurl setting
+1. add list images per page setting
+1. add tag search setting
+1. save settings in persist
