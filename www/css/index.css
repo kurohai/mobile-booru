@@ -128,6 +128,7 @@ body {
 #settings-app .settings-view .logging-view {
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
+}
 
 #settings-app {
     display: none;
@@ -135,6 +136,10 @@ body {
 
 .settings-view {
     width: 100%;
+}
+
+.logging-view {
+    text-align: justify;
 }
 
 .tag-input-container {
