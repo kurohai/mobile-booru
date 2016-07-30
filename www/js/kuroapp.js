@@ -259,6 +259,7 @@ var kuroapp = {
     updateSettings() {
         kuroapp.updateQueryLimit();
         kuroapp.updateBaseURL();
+        kuroapp.refreshMainPage();
     },
 
     updateBaseURL() {

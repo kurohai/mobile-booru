@@ -158,12 +158,10 @@ var SettingsContainer = React.createClass({
     render: function() {
         return (
             <div id="settings-container" className="settings-view">
-                <form>
                     <TagSearchSetting />
                     <BaseUrlSetting />
                     <ListItemPerPageSetting />
                     <UpdateSettingButton />
-                </form>
             </div>
         );
     }
