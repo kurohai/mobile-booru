@@ -24,7 +24,7 @@ var kuroapp = {
 
     bindEvents: function() {
         // bind events
-
+        kuroapp.loadSettings();
         $(".tag-search-form").on("submit", function() {
             kuroapp.updateRefresh();
         });
@@ -33,9 +33,8 @@ var kuroapp = {
         $(".setting-base-url-input").val(kuroapp.base_url);
         $(".setting-list-item-per-page-input").val(kuroapp.url_queries.limit);
 
-        $(".base-url-form").on("submit", function() {
-            kuroapp.base_url = $(".base-url-input").val();
-            kuroapp.updateRefresh();
+        $(".settings-form").on("submit", function() {
+            kuroapp.updateSettings();
         });
 
         // hammerIt(this.screenImage);
@@ -256,9 +255,37 @@ var kuroapp = {
         };
     },
 
+    saveSettings() {
+        var storage = window.localStorage;
+        log("saving settings");
+        storage.setItem("base_url", kuroapp.base_url);
+        storage.setItem("last_tags", $(".tag-input").val());
+        storage.setItem("query_limit", kuroapp.url_queries.limit);
+        log("saved base url: " + storage.getItem("base_url"))
+        log("saved last tags: " + storage.getItem("last_tags"))
+        log("saved query limit: " + storage.getItem("query_limit"))
+
+    },
+
+    loadSettings() {
+        log("loading settings");
+
+        var storage = window.localStorage;
+        kuroapp.base_url = storage.getItem("base_url") || kuroapp.base_url;
+        kuroapp.url_queries.tags = storage.getItem("last_tags") || kuroapp.url_queries.tags;
+        kuroapp.url_queries.limit = storage.getItem("query_limit") || kuroapp.url_queries.limit;
+        log("loaded base url: " + storage.getItem("base_url"));
+        log("loaded last tags: " + storage.getItem("last_tags"));
+        log("loaded query limit: " + storage.getItem("query_limit"));
+        $(".tag-input").val(kuroapp.url_queries.tags);
+
+        kuroapp.updateCurrentPath();
+    },
+
     updateSettings() {
         kuroapp.updateQueryLimit();
         kuroapp.updateBaseURL();
+        kuroapp.saveSettings();
         kuroapp.refreshMainPage();
     },
 
@@ -277,7 +304,7 @@ var kuroapp = {
         var url_limit = "limit=" + kuroapp.url_queries.limit;
         var url_page = "page=" + kuroapp.url_queries.page;
         var tag_search = "tags=" + query;
-        kuroapp.url_queries.tags = true
+        kuroapp.url_queries.tags = query;
         // path = "/tags.json"
          // /tags.json?search[name_matches]=a*.
         if (typeof query != "undefined") {
