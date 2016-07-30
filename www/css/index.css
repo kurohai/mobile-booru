@@ -125,13 +125,16 @@ body {
     font-family: Ratchicons;
 }
 
-#debug-app {
+#settings-app .settings-view .logging-view {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+
+#settings-app {
     display: none;
 }
 
 .settings-view {
-    width: 50%;
-    margin-left: 25%;
+    width: 100%;
 }
 
 .tag-input-container {

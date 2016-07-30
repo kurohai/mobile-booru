@@ -139,8 +139,9 @@ var ImageApp = React.createClass({
 var SettingsApp = React.createClass({
     render: function() {
         return (
-            <div id="debug-app">
-                <div className="settings-view content-padded"></div>
+            <div id="settings-app">
+                <SettingsContainer />
+                <LoggingContainer />
             </div>
         );
     }
