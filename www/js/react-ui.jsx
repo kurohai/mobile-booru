@@ -158,9 +158,12 @@ var SettingsContainer = React.createClass({
     render: function() {
         return (
             <div id="settings-container" className="settings-view">
-                <BaseUrlSetting />
-                <ListItemPerPageSetting />
-                <UpdateSettingButton />
+                <form>
+                    <TagSearchSetting />
+                    <BaseUrlSetting />
+                    <ListItemPerPageSetting />
+                    <UpdateSettingButton />
+                </form>
             </div>
         );
     }
@@ -184,11 +187,31 @@ var BaseUrlSetting = React.createClass({
     render: function() {
         return (
                 <div id="setting-base-url-view" className="setting-base-url-view">
+                    <label className="title">Base URL
+                    </label>
+
                     <input
                         type="text"
                         id="setting-base-url-input"
                         className="setting-base-url-input"
                         placeholder="http://" />
+
+                </div>
+        );
+    }
+});
+
+var TagSearchSetting = React.createClass({
+    render: function() {
+        return (
+                <div id="tag-input-view" className="tag-input-view">
+                    <label className="title">Tag Search
+                    </label>
+                    <input
+                        type="text"
+                        id="tag-input"
+                        className="tag-input"
+                        placeholder="*" />
                 </div>
         );
     }
@@ -198,6 +221,9 @@ var ListItemPerPageSetting = React.createClass({
     render: function() {
         return (
                 <div id="setting-list-item-per-page-view" className="setting-list-item-per-page-view">
+                    <label className="title">Results Per Page
+                    </label>
+
                     <input
                         type="text"
                         className="setting-list-item-per-page-input"
