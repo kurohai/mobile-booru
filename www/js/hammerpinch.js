@@ -113,12 +113,14 @@ var HammerPinch = {
             HammerPinch.transform =
                 "translate3d(" + HammerPinch.posX + "px," + HammerPinch.posY + "px, 0) " +
                 "scale3d(" + HammerPinch.scale + ", " + HammerPinch.scale + ", 1)";
+            kuroapp.disableSwipe();
         }
 
         if (HammerPinch.transform) {
             HammerPinch.el.style.webkitTransform = HammerPinch.transform;
             HammerPinch.transform = "";
         }
+
     },
 
     resetScreenScale: function() {
