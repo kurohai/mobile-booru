@@ -80,7 +80,7 @@ body {
     width: 100%;
     height: auto;
     background-position: center;
-    /*overflow: scroll;*/
+    overflow: scroll;
     -webkit-overflow-scrolling: touch;
 
 }
@@ -124,14 +124,18 @@ body {
 .icon-small {
     font-family: Ratchicons;
 }
+#settings-app .settings-view .logging-view {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 
-#debug-app {
+
+}
+#settings-app {
     display: none;
 }
 
 .settings-view {
-    width: 50%;
-    margin-left: 25%;
+    width: 100%;
 }
 
 .tag-input-container {

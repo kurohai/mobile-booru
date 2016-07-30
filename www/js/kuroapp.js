@@ -11,7 +11,7 @@ var kuroapp = {
         this.log("KuroApp starting...");
         this.screenMain = document.getElementById("main-app");
         this.screenImage = document.getElementById("image-app");
-        this.screenDebug = document.getElementById("debug-app");
+        this.screenSettings = document.getElementById("settings-app");
         this.contentContainer = document.getElementById("content");
 
         this.current_image = 0;
@@ -78,7 +78,7 @@ var kuroapp = {
 
         kuroapp.mcButtonSettings.on("tap press", function(ev) {
             kuroapp.log(ev.type + " gesture detected on settings button.");
-            kuroapp.activateDebugApp();
+            kuroapp.activateSettingsApp();
         });
 
         kuroapp.mcButtonPreviousPage.on("tap press", function(ev) {
@@ -261,7 +261,7 @@ var kuroapp = {
         // body...
         var template = "<li class=\"table-view-cell content-padded\">{{text}}</li>";
         console.log(logString);
-        $("#oop-test-01").append(template.replace("{{text}}", logString));
+        $("#logging-container").append(template.replace("{{text}}", logString));
     },
 
     // post: function(url) {
@@ -386,7 +386,7 @@ var kuroapp = {
         kuroapp.log("activating main app");
         kuroapp.screenMain.setAttribute('style', 'display: block;');
         kuroapp.screenImage.setAttribute('style', 'display: none;');
-        kuroapp.screenDebug.setAttribute('style', 'display: none;');
+        kuroapp.screenSettings.setAttribute('style', 'display: none;');
         $(".content").css('background-image', 'none');
 
 
@@ -418,7 +418,7 @@ var kuroapp = {
         kuroapp.log("activating scan app");
         kuroapp.screenMain.setAttribute('style', 'display: none;');
         kuroapp.screenImage.setAttribute('style', 'display: block;');
-        kuroapp.screenDebug.setAttribute('style', 'display: none;');
+        kuroapp.screenSettings.setAttribute('style', 'display: none;');
 
 
         // stop hammer for main
@@ -460,16 +460,13 @@ var kuroapp = {
     },
 
 
-    activateDebugApp: function() {
+    activateSettingsApp: function() {
         // body...
-        kuroapp.log("activating debug app");
+        kuroapp.log("activating settings app");
         kuroapp.screenMain.setAttribute('style', 'display: none;');
         kuroapp.screenImage.setAttribute('style', 'display: none;');
-        kuroapp.screenDebug.setAttribute('style', 'display: block;');
-        $(".app").css('background-image', 'none');
-        // $("#activate-main").removeClass("active");
-        // $("#activate-scan").removeClass("active");
-        // $("#activate-debug").addClass("active");
+        kuroapp.screenSettings.setAttribute('style', 'display: block;');
+        $(".content").css('background-image', 'none');
     },
 
 };

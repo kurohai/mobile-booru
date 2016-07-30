@@ -139,16 +139,50 @@ var ImageApp = React.createClass({
 var SettingsApp = React.createClass({
     render: function() {
         return (
-            <div id="debug-app">
-                <div className="settings-view content-padded"></div>
+            <div id="settings-app">
+                <SettingsContainer />
+                <LoggingContainer />
             </div>
         );
     }
 });
 
 
+var LoggingContainer = React.createClass({
+    render: function() {
+        return (
+            <div id="logging-container" className="logging-view content-padded"></div>
+        );
+    }
+});
 
+var SettingsContainer = React.createClass({
+    render: function() {
+        return (
+            <div id="settings-container" className="settings-view content-padded">
+                <BaseUrlSetting />
+            </div>
+        );
+    }
+});
 
+var BaseUrlSetting = React.createClass({
+    render: function() {
+        return (
+            <div id="setting-base-url-container" className="setting-base-url-view content-padded">
+                <input
+                    type="text"
+                    className="setting-base-url-input"
+                    placeholder="http://"
+                />
+                <button
+                    className="setting-base-url-button">
+                    Update
+                </button>
+            </div>
+        );
+    }
+});
 
 
 
