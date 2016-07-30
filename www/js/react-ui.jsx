@@ -5,8 +5,8 @@ var HomeNav = React.createClass({
         return (
             <button
             id="top-nav-button-home"
-            className="btn pull-left">
-            Main
+            className="btn pull-left icon-home icon-small">
+
             </button>
         );
     }
@@ -18,8 +18,8 @@ var RefreshNav = React.createClass({
         return (
             <button
             id="top-nav-button-refresh"
-            className="btn pull-left">
-            Refresh
+            className="btn pull-left icon-refresh icon-small">
+
             </button>
         );
     }
@@ -49,8 +49,7 @@ var NextNav = React.createClass({
         return (
             <button
             id="top-nav-button-next"
-            className="btn pull-right">
-            Next
+            className="btn pull-right icon-right-nav icon-small">
             </button>
         );
     }
@@ -62,8 +61,7 @@ var PreviousNav = React.createClass({
         return (
             <button
             id="top-nav-button-previous"
-            className="btn pull-right">
-            Previous
+            className="btn pull-right icon-left-nav icon-small">
             </button>
         );
     }
@@ -151,7 +149,7 @@ var SettingsApp = React.createClass({
 var LoggingContainer = React.createClass({
     render: function() {
         return (
-            <div id="logging-container" className="logging-view content-padded"></div>
+            <div id="logging-container" className="logging-view"></div>
         );
     }
 });
@@ -159,7 +157,7 @@ var LoggingContainer = React.createClass({
 var SettingsContainer = React.createClass({
     render: function() {
         return (
-            <div id="settings-container" className="settings-view content-padded">
+            <div id="settings-container" className="settings-view">
                 <BaseUrlSetting />
             </div>
         );
@@ -169,17 +167,18 @@ var SettingsContainer = React.createClass({
 var BaseUrlSetting = React.createClass({
     render: function() {
         return (
-            <div id="setting-base-url-container" className="setting-base-url-view content-padded">
-                <input
-                    type="text"
-                    className="setting-base-url-input"
-                    placeholder="http://"
-                />
-                <button
-                    className="setting-base-url-button">
-                    Update
-                </button>
-            </div>
+            <form className="input-group">
+                <div id="setting-base-url-container" className="setting-base-url-view input-row">
+                    <button
+                        className="setting-base-url-button ">
+                        Update
+                    </button>
+                    <input
+                        type="text"
+                        className="setting-base-url-input "
+                        placeholder="http://" />
+                </div>
+            </form>
         );
     }
 });
