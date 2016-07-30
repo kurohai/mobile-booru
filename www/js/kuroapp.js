@@ -41,9 +41,9 @@ var kuroapp = {
         HammerPinch.init(this.contentContainer);
 
         HammerPinch.mc.on('doubletap', HammerPinch.doubletapEvent);
-        HammerPinch.mc.on('pan panend', HammerPinch.panEvent);
-        HammerPinch.mc.on('pinch pinchend', HammerPinch.pinchEvent);
-        HammerPinch.mc.on('pan panend', HammerPinch.panendEvent);
+        HammerPinch.mc.on('pan panend pinch pinchend', HammerPinch.pEvents);
+        // HammerPinch.mc.on('pinch pinchend', HammerPinch.pinchEvent);
+        // HammerPinch.mc.on('pan panend', HammerPinch.panendEvent);
 
         HammerPinch.mc.get('doubletap').set({enable: false});
         HammerPinch.mc.get('pan').set({enable: false});
@@ -275,14 +275,6 @@ var kuroapp = {
         $("#oop-test-01").append(template.replace("{{text}}", logString));
     },
 
-    // post: function(url) {
-    //     $.post(url, kuroapp.onPostSuccess);
-    // },
-
-    // onPostSuccess: function(data) {
-    //     kuroapp.log("Post result: " + JSON.stringify(data));
-    // },
-
     get: function(url) {
         kuroapp.log("making get request");
         $.get(url, kuroapp.onGetSuccess);
@@ -306,25 +298,17 @@ var kuroapp = {
             kuroapp.updateImageList(d, i);
         };
 
-        // forEach example use
-        // data.forEach(function(d) {
-        //     kuroapp.log("inside forEach loop hanging out with my buddy " + d.id);
-        // });
     },
 
     refreshMainPage: function() {
         $("#imageListMain").empty();
         kuroapp.get(kuroapp.current_path);
         kuroapp.activateMainApp();
-        // $$('#main-app').on("swipeLeft", kuroapp.pagingNextMain);
-        // $$('#main-app').on("tap touch swipeLeft", kuroapp.pagingNextMain);
-        // $$('#main-app').style('background-size', '100%');
     },
 
     updateImageList: function(imageData, counter) {
         counter = counter || 0;
         kuroapp.log("counter: " + counter);
-        // var kuroapp.divHolder;
         var newImage;
         var imageLine, divid;
         newImage = '<img id="{{id}}" class="img-line" src="{{preview_url}}" alt="use id here later" />'
@@ -400,6 +384,7 @@ var kuroapp = {
         kuroapp.mcButtonPreviousImage.get('tap').set({ enable: false });
         kuroapp.mcButtonNextImage.get('tap').set({ enable: false });
         kuroapp.disableZoom();
+        HammerPinch.resetScreenScale();
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownMainScreen, false);
         kuroapp.log("all hardware buttons complete")
@@ -421,6 +406,8 @@ var kuroapp = {
         kuroapp.mcButtonPreviousImage.get('tap').set({ enable: true });
         kuroapp.mcButtonNextImage.get('tap').set({ enable: true });
         kuroapp.enableZoom();
+        HammerPinch.resetScreenScale();
+
         document.addEventListener("backbutton", kuroapp.onBackKeyDownImageScreen, false);
     },
 
@@ -441,6 +428,8 @@ var kuroapp = {
         kuroapp.screenDebug.setAttribute('style', 'display: block;');
         $(".content").css('background-image', 'none');
         kuroapp.disableZoom();
+        HammerPinch.resetScreenScale();
+
     },
 
     enableZoom: function() {

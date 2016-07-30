@@ -80,6 +80,12 @@ var HammerPinch = {
 
     },
 
+    pEvents: function(ev) {
+        HammerPinch.panEvent(ev);
+        HammerPinch.panendEvent(ev);
+        HammerPinch.pinchEvent(ev);
+    },
+
     panendEvent: function(ev) {
         //panend
         if(ev.type == "panend"){
@@ -111,7 +117,22 @@ var HammerPinch = {
 
         if (HammerPinch.transform) {
             HammerPinch.el.style.webkitTransform = HammerPinch.transform;
+            HammerPinch.transform = "";
         }
+    },
+
+    resetScreenScale: function() {
+        HammerPinch.transform =
+            "translate3d(0, 0, 0) " +
+            "scale3d(1, 1, 1) ";
+        HammerPinch.scale = 1;
+        HammerPinch.last_scale = 1;
+        HammerPinch.el.style.webkitTransform = HammerPinch.transform;
+        this.posX = 0;
+        this.posY = 0;
+        this.last_posX = 0;
+        this.last_posY = 0;
+
 
     },
 
