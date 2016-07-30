@@ -12,6 +12,8 @@ var kuroapp = {
         this.screenMain = document.getElementById("main-app");
         this.screenImage = document.getElementById("image-app");
         this.screenDebug = document.getElementById("debug-app");
+        this.contentContainer = document.getElementById("content");
+
         this.current_image = 0;
 
         this.bindEvents();
@@ -33,6 +35,8 @@ var kuroapp = {
             kuroapp.base_url = $(".base-url-input").val();
             kuroapp.updateRefresh();
         });
+
+        hammerIt(this.contentContainer);
 
         // set some dom obj variables
         var homeButton = document.getElementById("top-nav-button-home"),
