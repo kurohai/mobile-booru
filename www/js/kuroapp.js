@@ -419,16 +419,22 @@ var kuroapp = {
         kuroapp.refreshMainPage();
     },
 
+    onBackKeyDownSettingsScreen: function() {
+        kuroapp.refreshMainPage();
+    },
+
 
     activateSettingsApp: function() {
         // body...
-        kuroapp.log("activating debug app");
+        kuroapp.log("activating settings app");
         kuroapp.screenMain.setAttribute('style', 'display: none;');
         kuroapp.screenImage.setAttribute('style', 'display: none;');
         kuroapp.screenSettings.setAttribute('style', 'display: block;');
         $(".content").css('background-image', 'none');
         kuroapp.disableZoom();
         HammerPinch.resetScreenScale();
+        document.addEventListener("backbutton", kuroapp.onBackKeyDownSettingsScreen, false);
+
 
     },
 
