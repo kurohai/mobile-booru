@@ -456,15 +456,12 @@ var kuroapp = {
         log("disabling swipe");
         kuroapp.mcSwipePreviousImage.get('swipe').set({enable: false});
         kuroapp.mcSwipeNextImage.get('swipe').set({enable: false});
-        // kuroapp.enableZoom();
-
     },
 
     enableSwipe: function() {
         log("enabling swipe");
         kuroapp.mcSwipePreviousImage.get('swipe').set({enable: true});
         kuroapp.mcSwipeNextImage.get('swipe').set({enable: true});
-
     },
 
 };
@@ -554,20 +551,14 @@ var HammerPinch = {
     },
 
     pEvents: function(ev) {
-        if (HammerPinch.scale != 1) {
-            kuroapp.disableSwipe();
-        } else {
+        if (HammerPinch.scale <= 1) {
             kuroapp.enableSwipe();
+        } else {
+            kuroapp.disableSwipe();
         }
         HammerPinch.panEvent(ev);
         HammerPinch.panendEvent(ev);
         HammerPinch.pinchEvent(ev);
-        if (HammerPinch.scale != 1) {
-            kuroapp.disableSwipe();
-        } else {
-            kuroapp.enableSwipe();
-        }
-
     },
 
     panendEvent: function(ev) {
