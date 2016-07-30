@@ -159,6 +159,22 @@ var SettingsContainer = React.createClass({
         return (
             <div id="settings-container" className="settings-view">
                 <BaseUrlSetting />
+                <ListItemPerPageSetting />
+                <UpdateSettingButton />
+            </div>
+        );
+    }
+});
+
+var UpdateSettingButton = React.createClass({
+    render: function() {
+        return (
+            <div id="setting-update-setting-view" className="setting-update-setting-view">
+                <button
+                    id="setting-update-setting-button"
+                    className="setting-update-setting-button">
+                    Update
+                </button>
             </div>
         );
     }
@@ -167,18 +183,26 @@ var SettingsContainer = React.createClass({
 var BaseUrlSetting = React.createClass({
     render: function() {
         return (
-            <form className="input-group">
-                <div id="setting-base-url-container" className="setting-base-url-view input-row">
-                    <button
-                        className="setting-base-url-button ">
-                        Update
-                    </button>
+                <div id="setting-base-url-view" className="setting-base-url-view">
                     <input
                         type="text"
-                        className="setting-base-url-input "
+                        id="setting-base-url-input"
+                        className="setting-base-url-input"
                         placeholder="http://" />
                 </div>
-            </form>
+        );
+    }
+});
+
+var ListItemPerPageSetting = React.createClass({
+    render: function() {
+        return (
+                <div id="setting-list-item-per-page-view" className="setting-list-item-per-page-view">
+                    <input
+                        type="text"
+                        className="setting-list-item-per-page-input"
+                        placeholder="18" />
+                </div>
         );
     }
 });

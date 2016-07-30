@@ -29,7 +29,9 @@ var kuroapp = {
             kuroapp.updateRefresh();
         });
 
-        $(".base-url-input").val(kuroapp.base_url);
+
+        $(".setting-base-url-input").val(kuroapp.base_url);
+        $(".setting-list-item-per-page-input").val(kuroapp.url_queries.limit);
 
         $(".base-url-form").on("submit", function() {
             kuroapp.base_url = $(".base-url-input").val();
@@ -48,6 +50,16 @@ var kuroapp = {
         HammerPinch.mc.get('doubletap').set({enable: false});
         HammerPinch.mc.get('pan').set({enable: false});
         HammerPinch.mc.get('pinch').set({enable: false});
+
+        // add event for update settings button
+        var updateSettingsButton = document.getElementById("setting-update-setting-button");
+        kuroapp.mcUpdateSettingsButton = new Hammer.Manager(updateSettingsButton);
+        kuroapp.mcUpdateSettingsButton.add(new Hammer.Tap({ enable: true }));
+        kuroapp.mcUpdateSettingsButton.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on home button.");
+            kuroapp.updateSettings();
+        });
+
 
         // set some dom obj variables
         var homeButton = document.getElementById("top-nav-button-home"),
@@ -244,6 +256,20 @@ var kuroapp = {
         };
     },
 
+    updateSettings() {
+        kuroapp.updateQueryLimit();
+        kuroapp.updateBaseURL();
+    },
+
+    updateBaseURL() {
+        kuroapp.base_url = $(".setting-base-url-input").val();
+
+    },
+
+    updateQueryLimit() {
+        kuroapp.url_queries.limit = $(".setting-list-item-per-page-input").val();
+    },
+
     updateCurrentPath: function(query) {
         var query = query || "*";
         query = $(".tag-input").val();
@@ -302,6 +328,7 @@ var kuroapp = {
 
     refreshMainPage: function() {
         $("#imageListMain").empty();
+        kuroapp.updateCurrentPath();
         kuroapp.get(kuroapp.current_path);
         kuroapp.activateMainApp();
     },
