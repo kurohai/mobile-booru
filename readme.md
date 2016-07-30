@@ -8,14 +8,15 @@ A small booru image viewer. Supports any danbooru forked image board with json a
 
 ## Release 0.1.0 Beta
 
-[Mobile Booru v0.1.0 Beta](./build/com.kurohai.mobilebooru.apk)
+[Mobile Booru v0.1.1](./build/com.kurohai.mobilebooru-0.1.1.apk)
+
+[Mobile Booru v0.1.0 Beta](./build/com.kurohai.mobilebooru-0.1.0.apk)
 
 ## To-Do
 
 
 ### Version 0.1.1
 
-1. hashin!
 
 ### Later
 
