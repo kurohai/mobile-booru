@@ -36,7 +36,18 @@ var kuroapp = {
             kuroapp.updateRefresh();
         });
 
-        hammerIt(this.contentContainer);
+        // hammerIt(this.screenImage);
+        kuroapp.log("starting mc bind");
+        HammerPinch.init(this.contentContainer);
+
+        HammerPinch.mc.on('doubletap', HammerPinch.doubletapEvent);
+        HammerPinch.mc.on('pan panend', HammerPinch.panEvent);
+        HammerPinch.mc.on('pinch pinchend', HammerPinch.pinchEvent);
+        HammerPinch.mc.on('pan panend', HammerPinch.panendEvent);
+
+        HammerPinch.mc.get('doubletap').set({enable: false});
+        HammerPinch.mc.get('pan').set({enable: false});
+        HammerPinch.mc.get('pinch').set({enable: false});
 
         // set some dom obj variables
         var homeButton = document.getElementById("top-nav-button-home"),
@@ -365,13 +376,6 @@ var kuroapp = {
         $("#image-view").append(imageLine);
         kuroapp.setBackroundImage(imageData);
         kuroapp.current_image = imageData.id;
-
-
-        // $$("#image-view").swipeLeft(kuroapp.pagingNextImage);
-        // $$("#image-view").swipeRight(kuroapp.pagingPreviousImage);
-        // $$("#top-nav-button-next").touch(kuroapp.pagingNextImage);
-        // $$("#top-nav-button-previous").touch(kuroapp.pagingPreviousImage);
-
     },
 
     setBackroundImage: function(imageData) {
@@ -395,22 +399,10 @@ var kuroapp = {
 
         kuroapp.mcButtonPreviousImage.get('tap').set({ enable: false });
         kuroapp.mcButtonNextImage.get('tap').set({ enable: false });
-
-
-        // setup paging buttons for next
-        // document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextImage, false);
-        // document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextMain, false);
-        // document.getElementById("top-nav-button-next").addEventListener("click", kuroapp.pagingNextMain, false);
-        kuroapp.log("all next buttons complete");
-        // setup paging buttons for previous
-        // document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousImage, false);
-        // document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousMain, false);
-        // document.getElementById("top-nav-button-previous").addEventListener("click", kuroapp.pagingPreviousMain, false);
-        kuroapp.log("all previous buttons complete")
+        kuroapp.disableZoom();
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownMainScreen, false);
         kuroapp.log("all hardware buttons complete")
-
     },
 
     activateImageApp: function() {
@@ -428,26 +420,7 @@ var kuroapp = {
         // start hammer for image
         kuroapp.mcButtonPreviousImage.get('tap').set({ enable: true });
         kuroapp.mcButtonNextImage.get('tap').set({ enable: true });
-
-        // start swipe on image
-        // kuroapp.mcSwipeNextImage.get('swipe').set({ enable: true });
-        // kuroapp.mcSwipePreviousImage.get('swipe').set({ enable: true });
-
-
-
-        // start hammer for image
-
-
-        // setup paging buttons for next
-        // document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextMain, false);
-        // document.getElementById("top-nav-button-next").removeEventListener("click", kuroapp.pagingNextImage, false);
-        // document.getElementById("top-nav-button-next").addEventListener("click", kuroapp.pagingNextImage, false);
-
-        // setup paging buttons for previous
-        // document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousMain, false);
-        // document.getElementById("top-nav-button-previous").removeEventListener("click", kuroapp.pagingPreviousImage, false);
-        // document.getElementById("top-nav-button-previous").addEventListener("click", kuroapp.pagingPreviousImage, false);
-
+        kuroapp.enableZoom();
         document.addEventListener("backbutton", kuroapp.onBackKeyDownImageScreen, false);
     },
 
@@ -466,10 +439,23 @@ var kuroapp = {
         kuroapp.screenMain.setAttribute('style', 'display: none;');
         kuroapp.screenImage.setAttribute('style', 'display: none;');
         kuroapp.screenDebug.setAttribute('style', 'display: block;');
-        $(".app").css('background-image', 'none');
-        // $("#activate-main").removeClass("active");
-        // $("#activate-scan").removeClass("active");
-        // $("#activate-debug").addClass("active");
+        $(".content").css('background-image', 'none');
+        kuroapp.disableZoom();
+    },
+
+    enableZoom: function() {
+        log("enabling zoom");
+        HammerPinch.mc.get('doubletap').set({enable: true});
+        HammerPinch.mc.get('pan').set({enable: true});
+        HammerPinch.mc.get('pinch').set({enable: true});
+    },
+    disableZoom: function() {
+        log("disabling zoom");
+        HammerPinch.mc.get('doubletap').set({enable: false});
+        HammerPinch.mc.get('pan').set({enable: false});
+        HammerPinch.mc.get('pinch').set({enable: false});
     },
 
 };
+
+var log = kuroapp.log
