@@ -13,12 +13,13 @@ A small booru image viewer. Supports any danbooru forked image board with json a
 ## To-Do
 
 
-### Version 0.1.0
+### Version 0.1.1
 
-1. change default baseurl to SFW booru
-1. add base url change option in settings
-1. release version 0.1.0
-
+1. fix settings screen
+1. feature disable swipeleft and swiperight while scale != 1
+1. add baseurl setting
+1. add tag search setting
+1. add list images per page setting
 
 ### Later
 1. find a way to handle videos
@@ -58,6 +59,9 @@ A small booru image viewer. Supports any danbooru forked image board with json a
 1. add swipe for next image
 1. reflow main page thumbs into grid 3x6
 1. Create new logo and icons
+1. change default baseurl to SFW booru
+1. add base url change option in settings
+1. release version 0.1.0
 
 
 
