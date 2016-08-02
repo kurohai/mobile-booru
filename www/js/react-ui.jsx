@@ -134,12 +134,14 @@ var ImageApp = React.createClass({
     }
 });
 
+
+// logging container lives here for debugging
+// <LoggingContainer />
 var SettingsApp = React.createClass({
     render: function() {
         return (
             <div id="settings-app">
                 <SettingsContainer />
-                <LoggingContainer />
             </div>
         );
     }

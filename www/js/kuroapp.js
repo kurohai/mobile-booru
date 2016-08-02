@@ -29,7 +29,6 @@ var kuroapp = {
             kuroapp.updateRefresh();
         });
 
-
         $(".setting-base-url-input").val(kuroapp.base_url);
         $(".setting-list-item-per-page-input").val(kuroapp.url_queries.limit);
 
@@ -43,8 +42,6 @@ var kuroapp = {
 
         HammerPinch.mc.on('doubletap', HammerPinch.doubletapEvent);
         HammerPinch.mc.on('pan panend pinch pinchend', HammerPinch.pEvents);
-        // HammerPinch.mc.on('pinch pinchend', HammerPinch.pinchEvent);
-        // HammerPinch.mc.on('pan panend', HammerPinch.panendEvent);
 
         HammerPinch.mc.get('doubletap').set({enable: false});
         HammerPinch.mc.get('pan').set({enable: false});
@@ -58,7 +55,6 @@ var kuroapp = {
             kuroapp.log(ev.type + " gesture detected on home button.");
             kuroapp.updateSettings();
         });
-
 
         // set some dom obj variables
         var homeButton = document.getElementById("top-nav-button-home"),
@@ -140,7 +136,6 @@ var kuroapp = {
             kuroapp.pagingPreviousImage();
         });
 
-
         // swipe setup on main page
         kuroapp.mcSwipeNextPage = new Hammer.Manager(kuroapp.screenMain);
         kuroapp.mcSwipeNextPage.add(new Hammer.Swipe({enable: true}));
@@ -205,12 +200,10 @@ var kuroapp = {
                     kuroapp.get(kuroapp.current_path);
                     break;
 
-
                 } else {
                     kuroapp.log("next image: " + target.id);
                     kuroapp.loadFullImage(target);
                     break;
-
 
                 };
             };
@@ -243,12 +236,10 @@ var kuroapp = {
                     kuroapp.get(kuroapp.current_path);
                     break;
 
-
                 } else {
                     kuroapp.log("next image: " + target.id);
                     kuroapp.loadFullImage(target);
                     break;
-
 
                 };
             };
@@ -305,8 +296,7 @@ var kuroapp = {
         var url_page = "page=" + kuroapp.url_queries.page;
         var tag_search = "tags=" + query;
         kuroapp.url_queries.tags = query;
-        // path = "/tags.json"
-         // /tags.json?search[name_matches]=a*.
+
         if (typeof query != "undefined") {
             kuroapp.current_path = kuroapp.base_url + kuroapp.path;
             kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
@@ -316,8 +306,7 @@ var kuroapp = {
             kuroapp.current_path = kuroapp.base_url + kuroapp.path;
             kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
-
-        }
+        };
 
         kuroapp.log("updated url: " + kuroapp.current_path);
     },
@@ -432,7 +421,6 @@ var kuroapp = {
         kuroapp.screenSettings.setAttribute('style', 'display: none;');
         $(".content").css('background-image', 'none');
 
-
         kuroapp.mcButtonPreviousPage.get('tap').set({ enable: true });
         kuroapp.mcButtonNextPage.get('tap').set({ enable: true });
 
@@ -451,7 +439,6 @@ var kuroapp = {
         kuroapp.screenMain.setAttribute('style', 'display: none;');
         kuroapp.screenImage.setAttribute('style', 'display: block;');
         kuroapp.screenSettings.setAttribute('style', 'display: none;');
-
 
         // stop hammer for main
         kuroapp.mcButtonPreviousPage.get('tap').set({ enable: false });
@@ -478,7 +465,6 @@ var kuroapp = {
         kuroapp.refreshMainPage();
     },
 
-
     activateSettingsApp: function() {
         // body...
         kuroapp.log("activating settings app");
@@ -489,7 +475,6 @@ var kuroapp = {
         kuroapp.disableZoom();
         HammerPinch.resetScreenScale();
         document.addEventListener("backbutton", kuroapp.onBackKeyDownSettingsScreen, false);
-
 
     },
 
@@ -521,8 +506,6 @@ var kuroapp = {
 
 };
 
-
-
 var HammerPinch = {
     init: function(elm) {
         this.posX = 0;
@@ -539,7 +522,6 @@ var HammerPinch = {
         this.mc = new Hammer(elm, {});
         log("mc init finished");
         log("finished init");
-        // this.doubletapEvent(elm);
     },
 
     doubletapEvent: function(ev) {
@@ -577,8 +559,6 @@ var HammerPinch = {
             HammerPinch.transform = "";
         }
         HammerPinch.closeEvent();
-
-
     },
 
     panEvent: function(ev) {
@@ -601,8 +581,6 @@ var HammerPinch = {
             }
         }
         HammerPinch.closeEvent();
-
-
     },
 
     pEvents: function(ev) {
@@ -665,6 +643,5 @@ var HammerPinch = {
         this.last_posY = 0;
     },
 }
-
 
 var log = kuroapp.log
