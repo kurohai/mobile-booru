@@ -22,6 +22,22 @@ var kuroapp = {
         this.refreshMainPage();
     },
 
+    changeAPI() {
+        if (kuroapp.base_url.includes("e621")) {
+            // load e621 api
+            kuroapp.log("API changed to: e621");
+            kuroapp.path = "/post/index.json"
+        } else if (kuroapp.base_url.includes("danbooru")) {
+            // load danbooru api
+            kuroapp.log("API changed to: danbooru");
+            this.path = "/posts.json";
+        } else if (kuroapp.base_url.includes("room208")) {
+            // load danbooru api
+            kuroapp.log("API changed to: danbooru");
+            kuroapp.path = "/posts.json";
+        }
+    },
+
     bindEvents: function() {
         // bind events
         kuroapp.loadSettings();
@@ -158,7 +174,9 @@ var kuroapp = {
             kuroapp.pagingPreviousMain();
         });
 
-        kuroapp.activateMainApp();
+        // kuroapp.activateMainApp();
+        kuroapp.changeAPI();
+        kuroapp.refreshMainPage();
     },
 
     updateRefresh: function() {
@@ -285,7 +303,9 @@ var kuroapp = {
     updateSettings() {
         kuroapp.updateQueryLimit();
         kuroapp.updateBaseURL();
+        kuroapp.changeAPI();
         kuroapp.saveSettings();
+
         kuroapp.refreshMainPage();
     },
 
@@ -366,6 +386,13 @@ var kuroapp = {
         kuroapp.log("counter: " + counter);
         var newImage;
         var imageLine, divid;
+        imageData.preview_file_url = imageData.preview_file_url || imageData.preview_url;
+        if (imageData.preview_file_url.includes("https://")) {
+                imageData.preview_file_url = imageData.preview_file_url.replace("https://static1.e621.net", "");
+                imageData.file_url = imageData.file_url.replace("https://static1.e621.net", "");
+            // imageData.preview_file_url.replace("https://static1.e621.net", "");
+        }
+        kuroapp.log("preview url: " + imageData.preview_file_url);
         newImage = '<img id="{{id}}" class="img-line" src="{{preview_url}}" alt="use id here later" />'
         imageLine = newImage.replace("{{preview_url}}", kuroapp.formatFullURL(imageData.preview_file_url));
         imageLine = imageLine.replace("{{id}}", imageData.id);
