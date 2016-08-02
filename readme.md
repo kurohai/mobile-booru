@@ -28,11 +28,13 @@ A small booru image viewer. Supports any danbooru forked image board with json a
     - Danbooru (v1 & v2)
     - Moebooru
     - booru.org
+    - e621.net - partial support tested
 1. create settings page
     1. add base url change option in settings
-    1. add api type selection in settings
+    1. add api change based on base url
     1. auto screen rotate option in settings
 1. add user login
+1. load full image in higher resolution
 
 ### Done
 
