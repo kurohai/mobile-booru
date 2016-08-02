@@ -10,6 +10,8 @@ A small booru image viewer. Supports any danbooru forked image board with json a
 
 [Mobile Booru v0.1.1](./build/com.kurohai.mobilebooru-0.1.1.apk)
 
+## Release 0.1.1 Beta
+
 [Mobile Booru v0.1.0 Beta](./build/com.kurohai.mobilebooru-0.1.0.apk)
 
 ## To-Do
@@ -17,10 +19,18 @@ A small booru image viewer. Supports any danbooru forked image board with json a
 
 ### Version 0.1.1
 
+1. find all differences in api types
+1. add api detection
+1. create api model
+1. move all api specific code to api class methods
+1. try fixed width thumbnail size
+
 
 ### Later
 
+1. keyboard shortcuts
 1. find a way to handle videos
+1. deactivate prev and next buttons on settings page
 1. create model for json responses
     1. one for each api type
     1. Zenbooru (全ボール) is a client for image boards implementing the Gelbooru v0.2, Danbooru (v1 & v2) and Moebooru APIs and supporting booru.org sites.
@@ -35,6 +45,30 @@ A small booru image viewer. Supports any danbooru forked image board with json a
     1. auto screen rotate option in settings
 1. add user login
 1. load full image in higher resolution
+
+
+### API Object
+
+- Each API type will subclass an APIObject
+- Each parameter in the API that is used will be mapped to a common name
+- Find a method of accurately fingerprinting an api type based off of json fields
+
+```javascript
+var api = {
+    init() {
+    // init stuff
+    this.id = 0;
+    this.url_file = "";
+    this.url_large_file = "";
+    this.url_preview = "";
+    this.tags = [];
+    this.author = "";
+    this.date_created = ""; // convert to datetime object with class method
+    this.date_other stuff = "";
+    },
+}
+
+```
 
 ### Done
 
