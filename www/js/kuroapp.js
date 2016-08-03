@@ -1,3 +1,4 @@
+console.log("started loading kuroapp.js");
 var kuroapp = {
     init: function() {
         this.origin = window.location;
@@ -23,24 +24,24 @@ var kuroapp = {
         this.refreshMainPage();
     },
 
-    changeAPI() {
-        if (kuroapp.base_url.includes("e621")) {
+    changeAPI: function() {
+        if (kuroapp.base_url.indexOf("e621")) {
             // load e621 api
             kuroapp.log("API changed to: e621");
-            kuroapp.path = "/post/index.json"
-        } else if (kuroapp.base_url.includes("danbooru")) {
+            kuroapp.path = "/post/index.json";
+        } else if (kuroapp.base_url.indexOf("danbooru")) {
             // load danbooru api
             kuroapp.log("API changed to: danbooru");
             this.path = "/posts.json";
-        } else if (kuroapp.base_url.includes("konachan")) {
+        } else if (kuroapp.base_url.indexOf("konachan")) {
             // load konachan api
             kuroapp.log("API changed to: konachan");
             this.path = "/post.json";
-        } else if (kuroapp.base_url.includes("room208")) {
+        } else if (kuroapp.base_url.indexOf("room208")) {
             // load room208 api
             kuroapp.log("API changed to: danbooru");
             kuroapp.path = "/posts.json";
-        }
+        };
     },
 
     bindEvents: function() {
@@ -278,7 +279,7 @@ var kuroapp = {
         };
     },
 
-    saveSettings() {
+    saveSettings: function() {
         var storage = window.localStorage;
         log("saving settings");
         storage.setItem("base_url", kuroapp.base_url);
@@ -290,7 +291,7 @@ var kuroapp = {
 
     },
 
-    loadSettings() {
+    loadSettings: function() {
         log("loading settings");
 
         var storage = window.localStorage;
@@ -305,7 +306,7 @@ var kuroapp = {
         kuroapp.updateCurrentPath();
     },
 
-    updateSettings() {
+    updateSettings: function() {
         kuroapp.updateQueryLimit();
         kuroapp.updateBaseURL();
         kuroapp.changeAPI();
@@ -314,12 +315,12 @@ var kuroapp = {
         kuroapp.refreshMainPage();
     },
 
-    updateBaseURL() {
+    updateBaseURL: function() {
         kuroapp.base_url = $(".setting-base-url-input").val();
 
     },
 
-    updateQueryLimit() {
+    updateQueryLimit: function() {
         kuroapp.url_queries.limit = $(".setting-list-item-per-page-input").val();
     },
 
@@ -333,7 +334,7 @@ var kuroapp = {
         // path = "/tags.json"
         // /tags.json?search[name_matches]=a*.
 
-        if (kuroapp.base_url.includes("konachan")) {
+        if (kuroapp.base_url.indexOf("konachan")) {
             kuroapp.current_path = kuroapp.base_url + kuroapp.path;
         } else if (typeof query != "undefined") {
             kuroapp.current_path = kuroapp.base_url + kuroapp.path;
@@ -434,7 +435,7 @@ var kuroapp = {
 
     formatFullURL: function(path) {
         // use base url and append to path
-        if (path.includes("http://") == false && path.includes("https://") == false) {
+        if (path.indexOf("http://") == false && path.indexOf("https://") == false) {
             return kuroapp.base_url + path;
         } else {
             return path;
