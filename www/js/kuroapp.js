@@ -1,5 +1,6 @@
 var kuroapp = {
     init: function() {
+        this.origin = window.location;
         this.base_url = "https://booru.room208.org";
         this.path = "/posts.json";
         this.path_tags = "/tags.json";
@@ -31,8 +32,12 @@ var kuroapp = {
             // load danbooru api
             kuroapp.log("API changed to: danbooru");
             this.path = "/posts.json";
+        } else if (kuroapp.base_url.includes("konachan")) {
+            // load konachan api
+            kuroapp.log("API changed to: konachan");
+            this.path = "/post.json";
         } else if (kuroapp.base_url.includes("room208")) {
-            // load danbooru api
+            // load room208 api
             kuroapp.log("API changed to: danbooru");
             kuroapp.path = "/posts.json";
         }
@@ -326,8 +331,11 @@ var kuroapp = {
         var tag_search = "tags=" + query;
         kuroapp.url_queries.tags = query;
         // path = "/tags.json"
-         // /tags.json?search[name_matches]=a*.
-        if (typeof query != "undefined") {
+        // /tags.json?search[name_matches]=a*.
+
+        if (kuroapp.base_url.includes("konachan")) {
+            kuroapp.current_path = kuroapp.base_url + kuroapp.path;
+        } else if (typeof query != "undefined") {
             kuroapp.current_path = kuroapp.base_url + kuroapp.path;
             kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
@@ -352,6 +360,7 @@ var kuroapp = {
     get: function(url) {
         kuroapp.log("making get request");
         $.get(url, kuroapp.onGetSuccess);
+
         kuroapp.log("get request done");
     },
 
@@ -387,11 +396,7 @@ var kuroapp = {
         var newImage;
         var imageLine, divid;
         imageData.preview_file_url = imageData.preview_file_url || imageData.preview_url;
-        if (imageData.preview_file_url.includes("https://")) {
-                imageData.preview_file_url = imageData.preview_file_url.replace("https://static1.e621.net", "");
-                imageData.file_url = imageData.file_url.replace("https://static1.e621.net", "");
-            // imageData.preview_file_url.replace("https://static1.e621.net", "");
-        }
+
         kuroapp.log("preview url: " + imageData.preview_file_url);
         newImage = '<img id="{{id}}" class="img-line" src="{{preview_url}}" alt="use id here later" />'
         imageLine = newImage.replace("{{preview_url}}", kuroapp.formatFullURL(imageData.preview_file_url));
@@ -429,7 +434,11 @@ var kuroapp = {
 
     formatFullURL: function(path) {
         // use base url and append to path
-        return kuroapp.base_url + path;
+        if (path.includes("http://") == false && path.includes("https://") == false) {
+            return kuroapp.base_url + path;
+        } else {
+            return path;
+        }
     },
 
     loadFullImage: function(imageData) {
