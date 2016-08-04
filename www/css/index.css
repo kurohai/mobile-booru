@@ -109,14 +109,17 @@ body {
     width: 100%;
 }
 
-.img-div {
+.img-div .div-img-line {
     width: 100%;
 }
 
 .img-line {
-    width: 40%;
-    margin-left: 5%;
-    margin-right: 5%;
+    width: auto;
+    height: auto;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 .icon-small {

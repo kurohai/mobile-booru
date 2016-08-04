@@ -308,10 +308,10 @@ var kuroapp = {
 
     updateSettings: function() {
         kuroapp.updateQueryLimit();
-        kuroapp.updateBaseURL();
         kuroapp.changeAPI();
         kuroapp.saveSettings();
 
+        kuroapp.updateBaseURL();
         kuroapp.refreshMainPage();
     },
 
@@ -322,6 +322,7 @@ var kuroapp = {
 
     updateQueryLimit: function() {
         kuroapp.url_queries.limit = $(".setting-list-item-per-page-input").val();
+        kuroapp.log("query limit set to: " + kuroapp.url_queries.limit);
     },
 
     updateCurrentPath: function(query) {
@@ -336,7 +337,8 @@ var kuroapp = {
 
         if (kuroapp.base_url.indexOf("konachan")) {
             kuroapp.current_path = kuroapp.base_url + kuroapp.path;
-        } else if (typeof query != "undefined") {
+        };
+        if (typeof query != "undefined") {
             kuroapp.current_path = kuroapp.base_url + kuroapp.path;
             kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
@@ -346,7 +348,7 @@ var kuroapp = {
             kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
 
-        }
+        };
 
         kuroapp.log("updated url: " + kuroapp.current_path);
     },
@@ -401,45 +403,50 @@ var kuroapp = {
         kuroapp.log("preview url: " + imageData.preview_file_url);
         newImage = '<img id="{{id}}" class="img-line" src="{{preview_url}}" alt="use id here later" />'
         imageLine = newImage.replace("{{preview_url}}", kuroapp.formatFullURL(imageData.preview_file_url));
+        // imageLine = newImage.replace("{{preview_url}}", imageData.preview_file_url);
         imageLine = imageLine.replace("{{id}}", imageData.id);
+        $("#imageListMain").append(imageLine);
+        kuroapp.log("imageLine: " + imageLine)
 
-        if (counter % 2 == 0) {
-            kuroapp.log("counter mod 0");
-            kuroapp.divHolder = "<div id='{{divid}}' class='div-img-line'>{{img-01}}</div>";
-            kuroapp.divHolder = kuroapp.divHolder.replace("{{img-01}}", imageLine);
-            kuroapp.divHolder = kuroapp.divHolder.replace("{{divid}}", "img-div-" + counter);
-            $("#imageListMain").append(kuroapp.divHolder);
+        // if (counter % 2 == 0) {
+        //     kuroapp.log("counter mod 0");
+        //     kuroapp.divHolder = "<div id='{{divid}}' class='div-img-line'>{{img-01}}</div>";
+        //     kuroapp.divHolder = kuroapp.divHolder.replace("{{img-01}}", imageLine);
+        //     kuroapp.divHolder = kuroapp.divHolder.replace("{{divid}}", "img-div-" + counter);
+        //     $("#imageListMain").append(kuroapp.divHolder);
 
-            // setup image tap event for full image
-            mcImage = Hammer(document.getElementById(imageData.id));
-            mcImage.on("tap press", function(ev) {
-                kuroapp.log(ev.type + " gesture detected on image.");
-                kuroapp.loadFullImage(imageData);
-            });
+        // setup image tap event for full image
+        mcImage = Hammer(document.getElementById(imageData.id));
+        mcImage.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on image.");
+            kuroapp.loadFullImage(imageData);
+        });
 
-        } else {
-            kuroapp.divHolder = kuroapp.divHolder.replace("{{img-02}}", imageLine);
-            c = counter-1;
-            divid = "#img-div-" + c;
-            kuroapp.log("appending image to div: " + divid);
-            $(divid).append(imageLine);
+        // } else {
+        //     kuroapp.divHolder = kuroapp.divHolder.replace("{{img-02}}", imageLine);
+        //     c = counter-1;
+        //     divid = "#img-div-" + c;
+        //     kuroapp.log("appending image to div: " + divid);
+        //     $(divid).append(imageLine);
 
-            mcImage = Hammer(document.getElementById(imageData.id));
-            mcImage.on("tap press", function(ev) {
-                kuroapp.log(ev.type + " gesture detected on image.");
-                kuroapp.loadFullImage(imageData);
-            });
+        //     mcImage = Hammer(document.getElementById(imageData.id));
+        //     mcImage.on("tap press", function(ev) {
+        //         kuroapp.log(ev.type + " gesture detected on image.");
+        //         kuroapp.loadFullImage(imageData);
+        //     });
 
-        };
+        // };
     },
 
     formatFullURL: function(path) {
         // use base url and append to path
-        if (path.indexOf("http://") == false && path.indexOf("https://") == false) {
-            return kuroapp.base_url + path;
-        } else {
-            return path;
-        }
+        if (typeof path != "undefined") {
+            if (path.indexOf("http://") == false && path.indexOf("https://") == false) {
+                return kuroapp.base_url + path;
+            } else {
+                return kuroapp.base_url + path;
+            };
+        };
     },
 
     loadFullImage: function(imageData) {
