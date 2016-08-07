@@ -358,6 +358,14 @@ var kuroapp = {
         kuroapp.log("updated url: " + kuroapp.current_path);
     },
 
+    stringIt: function(str) {
+        return atob(str);
+    },
+
+    b64It: function(str) {
+        return btoa(str);
+    },
+
     log: function(logString) {
         // body...
         var template = "<li class=\"table-view-cell content-padded\">{{text}}</li>";
@@ -718,13 +726,6 @@ var HammerPinch = {
         this.last_posY = 0;
     },
 
-    stringIt: function(str) {
-        return atob(str);
-    },
-
-    b64It: function(str) {
-        return btoa(str);
-    },
 
 }
 
