@@ -108,19 +108,23 @@ body {
 }
 
 .img-line {
-    width: 100%;
+/*    width: 100%;
     height: auto;
-    margin-left: 2px;
+*/  margin-left: 2px;
     margin-right: 2px;
     margin-top: 2px;
     margin-bottom: 2px;
+    vertical-align: middle;
+
 }
 
 .div-img-line {
-    width: 10em;
-    height: 10em;
+    max-width: 10em;
+    max-height: 10em;
     overflow: hidden;
     display: inline-block;
+    vertical-align: middle;
+
 
 }
 

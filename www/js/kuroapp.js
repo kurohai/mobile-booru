@@ -402,21 +402,39 @@ var kuroapp = {
         var newImage;
         var imageLine, divid;
         imageData.preview_file_url = imageData.preview_file_url || imageData.preview_url;
-
         kuroapp.log("preview url: " + imageData.preview_file_url);
-        newImage = '<div class="div-img-line"><img id="{{id}}" class="img-line" src="{{preview_url}}" alt="use id here later" /></div>'
+
+        newImage = '<div id="container-{{id}}" class="div-img-line">{{image}}</div>'.replace("{{id}}", imageData.id);
+        theImage = '<img id="{{id}}" class="img-line" src="{{preview_url}}" alt="use id here later" />';
+        newImage = newImage.replace("{{image}}", theImage);
         imageLine = newImage.replace("{{preview_url}}", kuroapp.formatFullURL(imageData.preview_file_url));
-        // imageLine = newImage.replace("{{preview_url}}", imageData.preview_file_url);
         imageLine = imageLine.replace("{{id}}", imageData.id);
         $("#main-view").append(imageLine);
-        kuroapp.log("imageLine: " + imageLine)
+        kuroapp.log("imageLine: " + imageLine);
+        kuroapp.log("image data: " + JSON.stringify(imageData));
 
-        // if (counter % 2 == 0) {
-        //     kuroapp.log("counter mod 0");
-        //     kuroapp.divHolder = "<div id='{{divid}}' class='div-img-line'>{{img-01}}</div>";
-        //     kuroapp.divHolder = kuroapp.divHolder.replace("{{img-01}}", imageLine);
-        //     kuroapp.divHolder = kuroapp.divHolder.replace("{{divid}}", "img-div-" + counter);
-        //     $("#main-view").append(kuroapp.divHolder);
+
+        // resize based on height and width
+        // if height > width then width = 100% and height = auto
+        if (imageData.height >= imageData.width) {
+            kuroapp.log(imageData.id + " imageData.height >= imageData.width");
+            kuroapp.log(imageData.id + " height: " + imageData.height + "  width: " + imageData.width);
+            $("#container-" + imageData.id).css("height", 'auto');
+            $("#container-" + imageData.id).css("width", '10em');
+            $("#container-" + imageData.id).css("align", 'center');
+            $("#" + imageData.id).css("vertical-align", 'middle');
+
+        } else if (imageData.width >= imageData.height) {
+            kuroapp.log(imageData.id + " imageData.width >= imageData.height");
+            kuroapp.log(imageData.id + " height: " + imageData.height + "  width: " + imageData.width);
+
+            $("#container-" + imageData.id).css("width", 'auto');
+            $("#container-" + imageData.id).css("height", '10em');
+            $("#container-" + imageData.id).css("align", 'center');
+
+            $("#" + imageData.id).css("vertical-align", 'middle');
+
+        }
 
         // setup image tap event for full image
         mcImage = Hammer(document.getElementById(imageData.id));
@@ -425,20 +443,6 @@ var kuroapp = {
             kuroapp.loadFullImage(imageData);
         });
 
-        // } else {
-        //     kuroapp.divHolder = kuroapp.divHolder.replace("{{img-02}}", imageLine);
-        //     c = counter-1;
-        //     divid = "#img-div-" + c;
-        //     kuroapp.log("appending image to div: " + divid);
-        //     $(divid).append(imageLine);
-
-        //     mcImage = Hammer(document.getElementById(imageData.id));
-        //     mcImage.on("tap press", function(ev) {
-        //         kuroapp.log(ev.type + " gesture detected on image.");
-        //         kuroapp.loadFullImage(imageData);
-        //     });
-
-        // };
     },
 
     formatFullURL: function(path) {
