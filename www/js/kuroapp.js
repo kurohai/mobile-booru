@@ -1,6 +1,7 @@
 console.log("started loading kuroapp.js");
 var kuroapp = {
     init: function() {
+        this.log("KuroApp starting...");
         this.origin = window.location;
         this.base_url = "https://booru.room208.org";
         this.path = "/posts.json";
@@ -10,11 +11,12 @@ var kuroapp = {
         this.url_queries.page = 1;
         this.updateCurrentPath();
         this.log(this.template_dir);
-        this.log("KuroApp starting...");
         this.screenMain = document.getElementById("main-app");
         this.screenImage = document.getElementById("image-app");
         this.screenSettings = document.getElementById("settings-app");
         this.contentContainer = document.getElementById("content");
+        this.u = this.stringIt("a3Vyb2Rlc3U=");
+        this.k = this.stringIt("RnNsZVhENVZqWDVCNGxtOFZCMnBVTXhnMHRvNUZxSXlDREZBZWJINV9PQQ==");
 
         this.current_image = 0;
 
@@ -307,6 +309,7 @@ var kuroapp = {
     },
 
     updateSettings: function() {
+        kuroapp.url_queries.page = 1;
         kuroapp.updateQueryLimit();
         kuroapp.changeAPI();
         kuroapp.saveSettings();
@@ -350,8 +353,7 @@ var kuroapp = {
 
         };
         if (kuroapp.base_url.indexOf("danbooru")) {
-            // &login=kurodesu&api_key=FsleXD5VjX5B4lm8VB2pUMxg0to5FqIyCDFAebH5_OA
-            kuroapp.current_path = kuroapp.current_path + "&login=kurodesu&api_key=FsleXD5VjX5B4lm8VB2pUMxg0to5FqIyCDFAebH5_OA";
+            kuroapp.current_path = kuroapp.current_path + "&login="+kuroapp.u+"&api_key="+kuroapp.k+"";
         };
         kuroapp.log("updated url: " + kuroapp.current_path);
     },
@@ -715,6 +717,15 @@ var HammerPinch = {
         this.last_posX = 0;
         this.last_posY = 0;
     },
+
+    stringIt: function(str) {
+        return atob(str);
+    },
+
+    b64It: function(str) {
+        return btoa(str);
+    },
+
 }
 
 
