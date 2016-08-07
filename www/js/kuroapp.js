@@ -27,23 +27,28 @@ var kuroapp = {
     },
 
     changeAPI: function() {
-        if (kuroapp.base_url.indexOf("e621")) {
-            // load e621 api
-            kuroapp.log("API changed to: e621");
-            kuroapp.path = "/post/index.json";
-        } else if (kuroapp.base_url.indexOf("danbooru")) {
+        if (kuroapp.base_url.indexOf("safebooru") > 0) {
             // load danbooru api
             kuroapp.log("API changed to: danbooru");
             this.path = "/posts.json";
-        } else if (kuroapp.base_url.indexOf("konachan")) {
+        }
+        if (kuroapp.base_url.indexOf("e621") > 0) {
+            // load e621 api
+            kuroapp.log("API changed to: e621");
+            kuroapp.path = "/post/index.json";
+        } else if (kuroapp.base_url.indexOf("danbooru") > 0) {
+            // load danbooru api
+            kuroapp.log("API changed to: danbooru");
+            this.path = "/posts.json";
+        } else if (kuroapp.base_url.indexOf("konachan") > 0) {
             // load konachan api
             kuroapp.log("API changed to: konachan");
             this.path = "/post.json";
-        } else if (kuroapp.base_url.indexOf("room208")) {
+        } else if (kuroapp.base_url.indexOf("room208") > 0) {
             // load room208 api
             kuroapp.log("API changed to: danbooru");
             kuroapp.path = "/posts.json";
-        };
+        }
     },
 
     bindEvents: function() {
