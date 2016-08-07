@@ -83,11 +83,11 @@ body {
     -webkit-overflow-scrolling: touch;
 
 }
-
+/*
 #main-app {
     display: block;
 }
-
+*/
 #image-app {
     display: none;
     flex-shrink: 0;
@@ -101,7 +101,7 @@ body {
     height: 100%;
 }
 
-#deviceListRatchet {
+#main-view {
     flex-shrink: 0;
     overflow: visible;
     padding: 0px;

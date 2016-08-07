@@ -118,7 +118,7 @@ var MainApp = React.createClass({
     render: function() {
         return (
             <div id="main-app">
-                <span id="imageListMain"></span>
+                <span id="main-view"></span>
             </div>
         );
     }

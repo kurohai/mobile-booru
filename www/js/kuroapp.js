@@ -373,7 +373,7 @@ var kuroapp = {
     onGetSuccess: function(data) {
         tmp = data;
         kuroapp.current_results = data;
-        $("#imageListMain").empty();
+        $("#main-view").empty();
 
         if (typeof kuroapp.get_callback != 'undefined') {
             kuroapp.get_callback();
@@ -390,7 +390,7 @@ var kuroapp = {
     },
 
     refreshMainPage: function() {
-        $("#imageListMain").empty();
+        $("#main-view").empty();
         kuroapp.updateCurrentPath();
         kuroapp.get(kuroapp.current_path);
         kuroapp.activateMainApp();
@@ -408,7 +408,7 @@ var kuroapp = {
         imageLine = newImage.replace("{{preview_url}}", kuroapp.formatFullURL(imageData.preview_file_url));
         // imageLine = newImage.replace("{{preview_url}}", imageData.preview_file_url);
         imageLine = imageLine.replace("{{id}}", imageData.id);
-        $("#imageListMain").append(imageLine);
+        $("#main-view").append(imageLine);
         kuroapp.log("imageLine: " + imageLine)
 
         // if (counter % 2 == 0) {
@@ -416,7 +416,7 @@ var kuroapp = {
         //     kuroapp.divHolder = "<div id='{{divid}}' class='div-img-line'>{{img-01}}</div>";
         //     kuroapp.divHolder = kuroapp.divHolder.replace("{{img-01}}", imageLine);
         //     kuroapp.divHolder = kuroapp.divHolder.replace("{{divid}}", "img-div-" + counter);
-        //     $("#imageListMain").append(kuroapp.divHolder);
+        //     $("#main-view").append(kuroapp.divHolder);
 
         // setup image tap event for full image
         mcImage = Hammer(document.getElementById(imageData.id));
