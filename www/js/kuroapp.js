@@ -2,7 +2,7 @@ console.log("started loading kuroapp.js");
 var kuroapp = {
     init: function() {
         this.origin = window.location;
-        this.base_url = "https://booru.room208.org";
+        this.base_url = "https://danbooru.donmai.us";
         this.path = "/posts.json";
         this.path_tags = "/tags.json";
         this.url_queries = {};
@@ -285,9 +285,9 @@ var kuroapp = {
         storage.setItem("base_url", kuroapp.base_url);
         storage.setItem("last_tags", $(".tag-input").val());
         storage.setItem("query_limit", kuroapp.url_queries.limit);
-        log("saved base url: " + storage.getItem("base_url"))
-        log("saved last tags: " + storage.getItem("last_tags"))
-        log("saved query limit: " + storage.getItem("query_limit"))
+        log("saved base url: " + storage.getItem("base_url"));
+        log("saved last tags: " + storage.getItem("last_tags"));
+        log("saved query limit: " + storage.getItem("query_limit"));
 
     },
 
@@ -349,7 +349,7 @@ var kuroapp = {
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
 
         };
-        if (kuroapp.base_url.indexOf("danbooru")) {
+        if (kuroapp.base_url.indexOf("danbooru") >= 0) {
             // &login=kurodesu&api_key=FsleXD5VjX5B4lm8VB2pUMxg0to5FqIyCDFAebH5_OA
             kuroapp.current_path = kuroapp.current_path + "&login=kurodesu&api_key=FsleXD5VjX5B4lm8VB2pUMxg0to5FqIyCDFAebH5_OA";
         };
@@ -365,6 +365,7 @@ var kuroapp = {
 
     get: function(url) {
         kuroapp.log("making get request");
+        kuroapp.log("url: " + url);
         $.get(url, kuroapp.onGetSuccess);
 
         kuroapp.log("get request done");
@@ -444,11 +445,13 @@ var kuroapp = {
     formatFullURL: function(path) {
         // use base url and append to path
         if (typeof path != "undefined") {
-            if (path.indexOf("http://") == false && path.indexOf("https://") == false) {
-                return kuroapp.base_url + path;
-            } else {
-                return kuroapp.base_url + path;
-            };
+            if (path.startsWith("http")) {
+                return path;
+            }
+            if (path.startsWith("https")) {
+                return path;
+            }
+            return kuroapp.base_url + path;
         };
     },
 
