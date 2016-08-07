@@ -83,11 +83,11 @@ body {
     -webkit-overflow-scrolling: touch;
 
 }
-/*
+
 #main-app {
     display: block;
 }
-*/
+
 #image-app {
     display: none;
     flex-shrink: 0;
@@ -118,10 +118,10 @@ body {
 }
 
 .div-img-line {
-    min-width: 8em;
-    min-height: 8em;
-    max-width: 8em;
-    max-height: 8em;
+    min-width: 10em;
+    min-height: 10em;
+    max-width: 10em;
+    max-height: 10em;
     overflow: hidden;
     display: inline-block;
     vertical-align: middle;
