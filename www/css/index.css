@@ -78,16 +78,16 @@ body {
 .content {
     margin-top: 50px;
     width: 100%;
-    height: auto;
+    height: 100%;
     background-position: center;
     -webkit-overflow-scrolling: touch;
 
 }
-
+/*
 #main-app {
     display: block;
 }
-
+*/
 #image-app {
     display: none;
     flex-shrink: 0;
@@ -101,25 +101,27 @@ body {
     height: 100%;
 }
 
-#deviceListRatchet {
-    flex-shrink: 0;
-    overflow: visible;
-    padding: 0px;
-    margin: 0px;
+#main-view {
+    /*display: inline-block;*/
     width: 100%;
-}
-
-.img-div .div-img-line {
-    width: 100%;
+    height: 100%;
 }
 
 .img-line {
-    width: auto;
+    width: 100%;
     height: auto;
     margin-left: 2px;
     margin-right: 2px;
     margin-top: 2px;
     margin-bottom: 2px;
+}
+
+.div-img-line {
+    width: 10em;
+    height: 10em;
+    overflow: hidden;
+    display: inline-block;
+
 }
 
 .icon-small {
