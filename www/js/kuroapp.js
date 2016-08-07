@@ -349,7 +349,10 @@ var kuroapp = {
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
 
         };
-
+        if (kuroapp.base_url.indexOf("danbooru")) {
+            // &login=kurodesu&api_key=FsleXD5VjX5B4lm8VB2pUMxg0to5FqIyCDFAebH5_OA
+            kuroapp.current_path = kuroapp.current_path + "&login=kurodesu&api_key=FsleXD5VjX5B4lm8VB2pUMxg0to5FqIyCDFAebH5_OA";
+        };
         kuroapp.log("updated url: " + kuroapp.current_path);
     },
 
