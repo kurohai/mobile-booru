@@ -405,7 +405,7 @@ var kuroapp = {
         imageData.preview_file_url = imageData.preview_file_url || imageData.preview_url;
 
         kuroapp.log("preview url: " + imageData.preview_file_url);
-        newImage = '<img id="{{id}}" class="img-line" src="{{preview_url}}" alt="use id here later" />'
+        newImage = '<div class="div-img-line"><img id="{{id}}" class="img-line" src="{{preview_url}}" alt="use id here later" /></div'
         imageLine = newImage.replace("{{preview_url}}", kuroapp.formatFullURL(imageData.preview_file_url));
         // imageLine = newImage.replace("{{preview_url}}", imageData.preview_file_url);
         imageLine = imageLine.replace("{{id}}", imageData.id);
@@ -444,6 +444,7 @@ var kuroapp = {
 
     formatFullURL: function(path) {
         // use base url and append to path
+        kuroapp.log();
         if (typeof path != "undefined") {
             if (path.startsWith("http")) {
                 return path;
