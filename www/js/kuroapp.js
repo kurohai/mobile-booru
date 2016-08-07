@@ -328,6 +328,17 @@ var kuroapp = {
 
     },
 
+    formatFullURL: function(path) {
+        // use base url and append to path
+        if (typeof path != "undefined") {
+            if (path.startsWith("http://") == false && path.startsWith("https://") == false) {
+                return kuroapp.base_url + path;
+            } else {
+                return path;
+            };
+        };
+    },
+
     updateQueryLimit: function() {
         kuroapp.url_queries.limit = $(".setting-list-item-per-page-input").val();
         kuroapp.log("query limit set to: " + kuroapp.url_queries.limit);
@@ -342,24 +353,28 @@ var kuroapp = {
         kuroapp.url_queries.tags = query;
         // path = "/tags.json"
         // /tags.json?search[name_matches]=a*.
-
-        if (kuroapp.base_url.indexOf("konachan")) {
+        if (kuroapp.path.startsWith("https") || kuroapp.path.startsWith("http")) {
+            kuroapp.current_path = kuroapp.path;
+        } else {
             kuroapp.current_path = kuroapp.base_url + kuroapp.path;
+        }
+        if (kuroapp.base_url.indexOf("konachan") >= 0) {
+            kuroapp.current_path = kuroapp.current_path;
         };
         if (typeof query != "undefined") {
-            kuroapp.current_path = kuroapp.base_url + kuroapp.path;
             kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
             kuroapp.current_path = kuroapp.current_path + "&" + tag_search;
         } else {
-            kuroapp.current_path = kuroapp.base_url + kuroapp.path;
             kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
 
         };
-        if (kuroapp.base_url.indexOf("danbooru")) {
-            kuroapp.current_path = kuroapp.current_path + "&login="+kuroapp.u+"&api_key="+kuroapp.k+"";
+        if (kuroapp.base_url.indexOf("danbooru") >= 0) {
+            kuroapp.current_path = kuroapp.current_path + "&login="+kuroapp.u+"&api_key="+kuroapp.k;
         };
+
+
         kuroapp.log("updated url: " + kuroapp.current_path);
     },
 
@@ -458,17 +473,6 @@ var kuroapp = {
             kuroapp.loadFullImage(imageData);
         });
 
-    },
-
-    formatFullURL: function(path) {
-        // use base url and append to path
-        if (typeof path != "undefined") {
-            if (path.indexOf("http://") == false && path.indexOf("https://") == false) {
-                return kuroapp.base_url + path;
-            } else {
-                return kuroapp.base_url + path;
-            };
-        };
     },
 
     loadFullImage: function(imageData) {
