@@ -15,8 +15,6 @@ var kuroapp = {
         this.screenImage = document.getElementById("image-app");
         this.screenSettings = document.getElementById("settings-app");
         this.contentContainer = document.getElementById("content");
-        this.u = this.stringIt("a3Vyb2Rlc3U=");
-        this.k = this.stringIt("RnNsZVhENVZqWDVCNGxtOFZCMnBVTXhnMHRvNUZxSXlDREZBZWJINV9PQQ==");
 
         this.current_image = 0;
 
@@ -370,10 +368,6 @@ var kuroapp = {
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
 
         };
-        if (kuroapp.base_url.indexOf("danbooru") >= 0) {
-            kuroapp.current_path = kuroapp.current_path + "&login="+kuroapp.u+"&api_key="+kuroapp.k;
-        };
-
 
         kuroapp.log("updated url: " + kuroapp.current_path);
     },
