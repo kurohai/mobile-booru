@@ -15,8 +15,6 @@ var kuroapp = {
         this.screenImage = document.getElementById("image-app");
         this.screenSettings = document.getElementById("settings-app");
         this.contentContainer = document.getElementById("content");
-        this.u = this.stringIt("a3Vyb2Rlc3U=");
-        this.k = this.stringIt("RnNsZVhENVZqWDVCNGxtOFZCMnBVTXhnMHRvNUZxSXlDREZBZWJINV9PQQ==");
 
         this.current_image = 0;
 
@@ -27,23 +25,28 @@ var kuroapp = {
     },
 
     changeAPI: function() {
-        if (kuroapp.base_url.indexOf("e621")) {
-            // load e621 api
-            kuroapp.log("API changed to: e621");
-            kuroapp.path = "/post/index.json";
-        } else if (kuroapp.base_url.indexOf("danbooru")) {
+        if (kuroapp.base_url.indexOf("safebooru") > 0) {
             // load danbooru api
             kuroapp.log("API changed to: danbooru");
             this.path = "/posts.json";
-        } else if (kuroapp.base_url.indexOf("konachan")) {
+        }
+        if (kuroapp.base_url.indexOf("e621") > 0) {
+            // load e621 api
+            kuroapp.log("API changed to: e621");
+            kuroapp.path = "/post/index.json";
+        } else if (kuroapp.base_url.indexOf("danbooru") > 0) {
+            // load danbooru api
+            kuroapp.log("API changed to: danbooru");
+            this.path = "/posts.json";
+        } else if (kuroapp.base_url.indexOf("konachan") > 0) {
             // load konachan api
             kuroapp.log("API changed to: konachan");
             this.path = "/post.json";
-        } else if (kuroapp.base_url.indexOf("room208")) {
+        } else if (kuroapp.base_url.indexOf("room208") > 0) {
             // load room208 api
             kuroapp.log("API changed to: danbooru");
             kuroapp.path = "/posts.json";
-        };
+        }
     },
 
     bindEvents: function() {
@@ -323,6 +326,17 @@ var kuroapp = {
 
     },
 
+    formatFullURL: function(path) {
+        // use base url and append to path
+        if (typeof path != "undefined") {
+            if (path.startsWith("http://") == false && path.startsWith("https://") == false) {
+                return kuroapp.base_url + path;
+            } else {
+                return path;
+            };
+        };
+    },
+
     updateQueryLimit: function() {
         kuroapp.url_queries.limit = $(".setting-list-item-per-page-input").val();
         kuroapp.log("query limit set to: " + kuroapp.url_queries.limit);
@@ -337,24 +351,24 @@ var kuroapp = {
         kuroapp.url_queries.tags = query;
         // path = "/tags.json"
         // /tags.json?search[name_matches]=a*.
-
-        if (kuroapp.base_url.indexOf("konachan")) {
+        if (kuroapp.path.startsWith("https") || kuroapp.path.startsWith("http")) {
+            kuroapp.current_path = kuroapp.path;
+        } else {
             kuroapp.current_path = kuroapp.base_url + kuroapp.path;
+        }
+        if (kuroapp.base_url.indexOf("konachan") >= 0) {
+            kuroapp.current_path = kuroapp.current_path;
         };
         if (typeof query != "undefined") {
-            kuroapp.current_path = kuroapp.base_url + kuroapp.path;
             kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
             kuroapp.current_path = kuroapp.current_path + "&" + tag_search;
         } else {
-            kuroapp.current_path = kuroapp.base_url + kuroapp.path;
             kuroapp.current_path = kuroapp.current_path + "?" + url_limit;
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
 
         };
-        if (kuroapp.base_url.indexOf("danbooru")) {
-            kuroapp.current_path = kuroapp.current_path + "&login="+kuroapp.u+"&api_key="+kuroapp.k+"";
-        };
+
         kuroapp.log("updated url: " + kuroapp.current_path);
     },
 
@@ -453,17 +467,6 @@ var kuroapp = {
             kuroapp.loadFullImage(imageData);
         });
 
-    },
-
-    formatFullURL: function(path) {
-        // use base url and append to path
-        if (typeof path != "undefined") {
-            if (path.indexOf("http://") == false && path.indexOf("https://") == false) {
-                return kuroapp.base_url + path;
-            } else {
-                return kuroapp.base_url + path;
-            };
-        };
     },
 
     loadFullImage: function(imageData) {
@@ -729,5 +732,11 @@ var HammerPinch = {
 
 }
 
+if (typeof String.prototype.startsWith != 'function') {
+  // see below for better implementation!
+  String.prototype.startsWith = function (str){
+    return this.indexOf(str) === 0;
+  };
+}
 
 var log = kuroapp.log
