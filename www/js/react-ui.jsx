@@ -67,6 +67,30 @@ var PreviousNav = React.createClass({
     }
 });
 
+// tags
+var TagsNav = React.createClass({
+    render: function() {
+        return (
+            <button
+            id="top-nav-button-tags"
+            className="btn pull-right icon-info icon-small">
+            </button>
+        );
+    }
+});
+
+// tags
+var DownloadNav = React.createClass({
+    render: function() {
+        return (
+            <button
+            id="top-nav-button-download"
+            className="btn pull-right icon-download icon-small">
+            </button>
+        );
+    }
+});
+
 
 
 // Base Nav Bar
@@ -79,6 +103,8 @@ var BaseHeader = React.createClass({
                 <SettingsNav />
                 <NextNav />
                 <PreviousNav />
+                <TagsNav />
+                <DownloadNav />
             </header>
         );
     }
