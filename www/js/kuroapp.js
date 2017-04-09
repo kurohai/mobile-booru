@@ -506,8 +506,35 @@ var kuroapp = {
         HammerPinch.resetScreenScale();
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownMainScreen, false);
+
+        document.removeEventListener("keypress", kuroapp.imageHotkeys, false);
+        document.addEventListener("keypress", kuroapp.mainHotkeys, false);
+
         kuroapp.log("all hardware buttons complete")
     },
+
+    mainHotkeys: function() {
+        kuroapp.log('keypress: ' + event.keyCode);
+        if (event.keyCode == 97) {
+            kuroapp.pagingPreviousMain();
+        } else if (event.keyCode == 100) {
+            kuroapp.pagingNextMain();
+        } else if (event.keyCode == 113) {
+            kuroapp.activateMainApp();
+        }
+    },
+
+    imageHotkeys: function() {
+        kuroapp.log('keypress: ' + event.keyCode);
+        if (event.keyCode == 97) {
+            kuroapp.pagingPreviousImage();
+        } else if (event.keyCode == 100) {
+            kuroapp.pagingNextImage();
+        } else if (event.keyCode == 113) {
+            kuroapp.activateMainApp();
+        }
+    },
+
 
     activateImageApp: function() {
         // body...
@@ -528,6 +555,9 @@ var kuroapp = {
         HammerPinch.resetScreenScale();
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownImageScreen, false);
+        document.removeEventListener("keypress", kuroapp.mainHotkeys, false);
+        document.addEventListener("keypress", kuroapp.imageHotkeys, false);
+
     },
 
     onBackKeyDownImageScreen: function() {
@@ -553,7 +583,8 @@ var kuroapp = {
         kuroapp.disableZoom();
         HammerPinch.resetScreenScale();
         document.addEventListener("backbutton", kuroapp.onBackKeyDownSettingsScreen, false);
-
+        document.removeEventListener("keypress", kuroapp.mainHotkeys, false);
+        document.removeEventListener("keypress", kuroapp.imageHotkeys, false);
 
     },
 
