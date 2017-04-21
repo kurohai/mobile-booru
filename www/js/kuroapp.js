@@ -386,18 +386,16 @@ var kuroapp = {
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
 
         };
+
         if (kuroapp.base_url.indexOf("danbooru") >= 0) {
             // use login for danbooru if supplied
             $(".setting-site-login-view").removeClass("hidden");
             if (kuroapp.site_username != "" && kuroapp.site_password != "") {
                 kuroapp.current_path = kuroapp.current_path + "&login="+kuroapp.site_username+"&api_key="+kuroapp.site_password;
-
             }
         } else {
             $(".setting-site-login-view").addClass("hidden");
-
         };
-
 
         kuroapp.log("updated url: " + kuroapp.current_path);
     },
