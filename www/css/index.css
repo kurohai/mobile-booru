@@ -152,6 +152,10 @@ body {
 
 }
 
+#setting-site-login-view {
+    display: hidden;
+}
+
 label.title {
     width: 20%;
     float: left;

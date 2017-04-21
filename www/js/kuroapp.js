@@ -4,6 +4,8 @@ var kuroapp = {
         this.log("KuroApp starting...");
         this.origin = window.location;
         this.base_url = "https://booru.room208.org";
+        this.site_username = "";
+        this.site_password = "";
         this.path = "/posts.json";
         this.path_tags = "/tags.json";
         this.url_queries = {};
@@ -58,6 +60,9 @@ var kuroapp = {
 
 
         $(".setting-base-url-input").val(kuroapp.base_url);
+        $(".setting-site-login-username-input").val(kuroapp.site_username);
+        $(".setting-site-login-password-input").val(kuroapp.site_password);
+
         $(".setting-list-item-per-page-input").val(kuroapp.url_queries.limit);
 
         $(".settings-form").on("submit", function() {
@@ -288,9 +293,13 @@ var kuroapp = {
         var storage = window.localStorage;
         log("saving settings");
         storage.setItem("base_url", kuroapp.base_url);
+        storage.setItem("site_username", kuroapp.site_username);
+        storage.setItem("site_password", kuroapp.site_password);
         storage.setItem("last_tags", $(".tag-input").val());
         storage.setItem("query_limit", kuroapp.url_queries.limit);
         log("saved base url: " + storage.getItem("base_url"))
+        log("saved username: " + storage.getItem("site_username"))
+        log("saved password: " + storage.getItem("site_password"))
         log("saved last tags: " + storage.getItem("last_tags"))
         log("saved query limit: " + storage.getItem("query_limit"))
 
@@ -301,9 +310,13 @@ var kuroapp = {
 
         var storage = window.localStorage;
         kuroapp.base_url = storage.getItem("base_url") || kuroapp.base_url;
+        kuroapp.site_username = storage.getItem("site_username") || kuroapp.site_username;
+        kuroapp.site_password = storage.getItem("site_password") || kuroapp.site_password;
         kuroapp.url_queries.tags = storage.getItem("last_tags") || kuroapp.url_queries.tags;
         kuroapp.url_queries.limit = storage.getItem("query_limit") || kuroapp.url_queries.limit;
         log("loaded base url: " + storage.getItem("base_url"));
+        log("loaded username: " + storage.getItem("site_username"));
+        log("loaded password: " + storage.getItem("site_password"));
         log("loaded last tags: " + storage.getItem("last_tags"));
         log("loaded query limit: " + storage.getItem("query_limit"));
         $(".tag-input").val(kuroapp.url_queries.tags);
@@ -318,12 +331,17 @@ var kuroapp = {
         kuroapp.saveSettings();
 
         kuroapp.updateBaseURL();
+        kuroapp.updateSiteLogin();
         kuroapp.refreshMainPage();
     },
 
     updateBaseURL: function() {
         kuroapp.base_url = $(".setting-base-url-input").val();
+    },
 
+    updateSiteLogin: function() {
+        kuroapp.site_username = $(".setting-site-login-username-input").val();
+        kuroapp.site_password = $(".setting-site-login-password-input").val();
     },
 
     formatFullURL: function(path) {
@@ -368,6 +386,18 @@ var kuroapp = {
             kuroapp.current_path = kuroapp.current_path + "&" + url_page;
 
         };
+        if (kuroapp.base_url.indexOf("danbooru") >= 0) {
+            // use login for danbooru if supplied
+            $(".setting-site-login-view").removeClass("hidden");
+            if (kuroapp.site_username != "" && kuroapp.site_password != "") {
+                kuroapp.current_path = kuroapp.current_path + "&login="+kuroapp.site_username+"&api_key="+kuroapp.site_password;
+
+            }
+        } else {
+            $(".setting-site-login-view").addClass("hidden");
+
+        };
+
 
         kuroapp.log("updated url: " + kuroapp.current_path);
     },
