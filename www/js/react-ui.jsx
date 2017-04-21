@@ -73,7 +73,7 @@ var TagsNav = React.createClass({
         return (
             <button
             id="top-nav-button-tags"
-            className="btn pull-right icon-info icon-small">
+            className="btn pull-right icon-info icon-small hidden">
             </button>
         );
     }
@@ -85,7 +85,7 @@ var DownloadNav = React.createClass({
         return (
             <button
             id="top-nav-button-download"
-            className="btn pull-right icon-download icon-small">
+            className="btn pull-right icon-download icon-small hidden">
             </button>
         );
     }
