@@ -234,14 +234,20 @@ var SiteLoginSetting = React.createClass({
     render: function() {
         return (
                 <div id="setting-site-login-view" className="setting-site-login-view hidden">
-                    <label className="title">Username
+                    <label className="title">
+                        Site Username
                     </label>
 
                     <input
                         type="text"
                         id="setting-site-login-username-input"
                         className="setting-site-login-username-input"
-                        placeholder="username" />
+                        placeholder="username"
+                    />
+
+                    <label className="title">
+                        Site Password
+                    </label>
                     <input
                         type="text"
                         id="setting-site-login-password-input"
