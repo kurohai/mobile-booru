@@ -67,6 +67,30 @@ var PreviousNav = React.createClass({
     }
 });
 
+// tags
+var TagsNav = React.createClass({
+    render: function() {
+        return (
+            <button
+            id="top-nav-button-tags"
+            className="btn pull-right icon-info icon-small hidden">
+            </button>
+        );
+    }
+});
+
+// tags
+var DownloadNav = React.createClass({
+    render: function() {
+        return (
+            <button
+            id="top-nav-button-download"
+            className="btn pull-right icon-download icon-small hidden">
+            </button>
+        );
+    }
+});
+
 
 
 // Base Nav Bar
@@ -79,6 +103,8 @@ var BaseHeader = React.createClass({
                 <SettingsNav />
                 <NextNav />
                 <PreviousNav />
+                <TagsNav />
+                <DownloadNav />
             </header>
         );
     }
@@ -163,6 +189,7 @@ var SettingsContainer = React.createClass({
             <form id="settings-form" className="settings-form" method="GET" action="#">
                     <TagSearchSetting />
                     <BaseUrlSetting />
+                    <SiteLoginSetting />
                     <ListItemPerPageSetting />
                     <UpdateSettingButton />
             </form>
@@ -197,6 +224,29 @@ var BaseUrlSetting = React.createClass({
                         id="setting-base-url-input"
                         className="setting-base-url-input"
                         placeholder="http://" />
+
+                </div>
+        );
+    }
+});
+
+var SiteLoginSetting = React.createClass({
+    render: function() {
+        return (
+                <div id="setting-site-login-view" className="setting-site-login-view hidden">
+                    <label className="title">Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="setting-site-login-username-input"
+                        className="setting-site-login-username-input"
+                        placeholder="username" />
+                    <input
+                        type="text"
+                        id="setting-site-login-password-input"
+                        className="setting-site-login-password-input"
+                        placeholder="password" />
 
                 </div>
         );
