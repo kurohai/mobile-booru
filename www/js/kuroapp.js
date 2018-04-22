@@ -61,6 +61,12 @@ var kuroapp = {
         window.rootFS = fileSystem.root;
     },
 
+    admobInit: function() {
+        admob.initAdmob("ca-app-pub-1225122818360214/7810851384", "");//admob id format ca-app-pub-xxxxxxxxxxxxxxxxxxx/xxxxxxxxxx
+        admob.showBanner(admob.BannerSize.BANNER,admob.Position.BOTTOM_APP);//show banner at the top of app
+
+    },
+
 
     bindEvents: function() {
         // bind events
@@ -216,7 +222,8 @@ var kuroapp = {
 
         // kuroapp.activateMainApp();
         kuroapp.changeAPI();
-        kuroapp.refreshMainPage();
+        // kuroapp.refreshMainPage();
+
     },
 
     updateRefresh: function() {

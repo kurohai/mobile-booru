@@ -39,6 +39,8 @@ var app = {
         // device is ready. events can be added, cordova stuff will work
         kuroapp.init();
         kuroapp.refreshMainPage();
+        kuroapp.log("Starting AdMob Init!");
+        kuroapp.admobInit();
     },
 
 };
