@@ -3,10 +3,10 @@
 
 ## Ad Unit Settings ##
 
-|               AdMob App ID               |   Ad Unit Name   | Ad Format |               Ad Unit ID               |              Ad type               | Automatic refresh | eCPM floor |
-|------------------------------------------|------------------|-----------|----------------------------------------|------------------------------------|-------------------|------------|
-| `ca-app-pub-1225122818360214~5065268548` | banner-bottom-01 | Banner    | ca-app-pub-1225122818360214/7810851384 | Text, image, and rich media, Video | Google optimized  | Disabled   |
-|                                          |                  |           |                                        |                                    |                   |            |
+|               AdMob App ID               |    Ad Unit Name    | Ad Format |               Ad Unit ID               |              Ad type               | Automatic refresh | eCPM floor |
+|------------------------------------------|--------------------|-----------|----------------------------------------|------------------------------------|-------------------|------------|
+| `ca-app-pub-1225122818360214~5065268548` | banner-bottom-01 a | Banner    | ca-app-pub-1225122818360214/7810851384 | Text, image, and rich media, Video | Google optimized  | Disabled   |
+|                                          |                    |           |                                        |                                    |                   |            |
 
 
 ## Instructions ##
