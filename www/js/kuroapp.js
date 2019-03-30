@@ -19,10 +19,12 @@ var kuroapp = {
         this.screenSettings = document.getElementById("settings-app");
         this.buttonDownload = document.getElementById("top-nav-button-download");
         this.buttonTags = document.getElementById("top-nav-button-tags");
+        // this.buttonTagsOff = document.getElementById("top-nav-button-tags");
         this.contentContainer = document.getElementById("content");
         // this.dataStorage = cordova.file.dataDirectory;
         this.logging = false;
         this.current_image = 0;
+        this.tagsActive = false;
 
         this.bindEvents();
         this.log("KuroApp initialized!");
@@ -116,7 +118,7 @@ var kuroapp = {
         kuroapp.mcButtonSettings = new Hammer(settingsButton);
         kuroapp.mcButtonDownload = new Hammer(kuroapp.buttonDownload);
         kuroapp.mcButtonTags = new Hammer(kuroapp.buttonTags);
-        kuroapp.mcButtonTagsOff = new Hammer(kuroapp.buttonTags);
+        // kuroapp.mcButtonTagsOff = new Hammer(kuroapp.buttonTagsOff);
 
         // previous button setup main
         kuroapp.mcButtonPreviousPage = new Hammer.Manager(previousButton);
@@ -155,15 +157,26 @@ var kuroapp = {
             kuroapp.downloadImage();
         });
 
-        kuroapp.mcButtonTags.on("tap press", function(ev) {
+        kuroapp.mcButtonTags.on("tap", function(ev) {
             kuroapp.log(ev.type + " gesture detected on tags button.");
-            kuroapp.imageTags();
+            if (kuroapp.tagsActive == false) {
+                kuroapp.imageTags();
+                kuroapp.tagsActive = true;
+            } else if (kuroapp.tagsActive == true) {
+                kuroapp.activateImageApp();
+                kuroapp.pagingNextImage();
+                kuroapp.pagingPreviousImage();
+                kuroapp.tagsActive = false;
+            }
         });
 
-        kuroapp.mcButtonTagsOff.on("tap press", function(ev) {
-            kuroapp.log(ev.type + " gesture detected on tags button.");
-            kuroapp.activateImageApp();
-        });
+        // kuroapp.mcButtonTagsOff.on("tap", function(ev) {
+        //     kuroapp.log(ev.type + " gesture detected on tags OFF button.");
+        //     kuroapp.activateImageApp();
+        //     kuroapp.pagingNextImage();
+        //     kuroapp.pagingPreviousImage();
+
+        // });
 
         kuroapp.mcButtonPreviousPage.on("tap press", function(ev) {
             kuroapp.log(ev.type + " gesture detected on main previous button.");
@@ -589,7 +602,7 @@ var kuroapp = {
         kuroapp.mcButtonNextImage.get('tap').set({ enable: false });
         kuroapp.mcButtonDownload.get('tap').set({ enable: false });
         kuroapp.mcButtonTags.get('tap').set({ enable: false });
-        kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
+        // kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
 
         kuroapp.disableZoom();
         HammerPinch.resetScreenScale();
@@ -648,6 +661,9 @@ var kuroapp = {
             kuroapp.activateSettingsApp();
         } else if (event.keyCode == 116 || event.keyCode == 84) {
             kuroapp.activateImageApp();
+            kuroapp.pagingNextImage();
+            kuroapp.pagingPreviousImage();
+
         }
     },
 
@@ -655,15 +671,15 @@ var kuroapp = {
         // body...
         kuroapp.log("activating scan app");
         kuroapp.screenMain.setAttribute('style', 'display: none;');
-        kuroapp.screenImage.setAttribute('style', 'display: block;');
         kuroapp.screenTags.setAttribute('style', 'display: none;');
+        kuroapp.screenImage.setAttribute('style', 'display: block;');
         kuroapp.screenSettings.setAttribute('style', 'display: none;');
         kuroapp.buttonDownload.setAttribute('style', 'display: block;');
         kuroapp.buttonTags.setAttribute('style', 'display: block;');
         $("#tags-view-left").empty();
         $("#tags-view-right").empty();
 
-
+        kuroapp.tagsActive = false;
 
         // stop hammer for main
         kuroapp.mcButtonPreviousPage.get('tap').set({ enable: false });
@@ -674,6 +690,7 @@ var kuroapp = {
         kuroapp.mcButtonNextImage.get('tap').set({ enable: true });
         kuroapp.mcButtonDownload.get('tap').set({ enable: true });
         kuroapp.mcButtonTags.get('tap').set({ enable: true });
+        // kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
         kuroapp.enableZoom();
         HammerPinch.resetScreenScale();
 
@@ -706,6 +723,7 @@ var kuroapp = {
         document.removeEventListener("keydown", kuroapp.imageHotkeys, false);
         kuroapp.mcButtonDownload.get('tap').set({ enable: false });
         kuroapp.mcButtonTags.get('tap').set({ enable: false });
+        // kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
         $("#tags-view-left").empty();
         $("#tags-view-right").empty();
         $("#tag-input").focus();
@@ -753,8 +771,10 @@ var kuroapp = {
         $("#tags-view-right").css('display', 'block');
         $("#tags-view-right").css('float', 'right');
         $("#tags-view-right").css('width', '40%');
-
+        kuroapp.tagsActive = true;
         document.addEventListener("keydown", kuroapp.tagHotkeys, false);
+        // kuroapp.mcButtonTags.get('tap').set({ enable: true });
+        // kuroapp.mcButtonTagsOff.get('tap').set({ enable: true });
 
 
         for( var i = 0; i <= kuroapp.tag_list.length; i++) {
@@ -771,8 +791,6 @@ var kuroapp = {
 
         }
         // kuroapp.mcButtonDownload.get('tap').set({ enable: true });
-        kuroapp.mcButtonTags.get('tap').set({ enable: false });
-        kuroapp.mcButtonTagsOff.get('tap').set({ enable: true });
 
 
     },
