@@ -9,9 +9,6 @@
   "installed_plugins": {
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.kurohai.mobilebooru"
-    },
-    "com.moust.cordova.videoplayer": {
-      "PACKAGE_NAME": "com.kurohai.mobilebooru"
     }
   },
   "dependent_plugins": {
