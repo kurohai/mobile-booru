@@ -1,15 +1,18 @@
 {
-    "prepare_queue": {
-        "installed": [],
-        "uninstalled": []
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.kurohai.mobilebooru"
     },
-    "config_munge": {
-        "files": {}
-    },
-    "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.kurohai.mobilebooru"
-        }
-    },
-    "dependent_plugins": {}
+    "com.moust.cordova.videoplayer": {
+      "PACKAGE_NAME": "com.kurohai.mobilebooru"
+    }
+  },
+  "dependent_plugins": {}
 }

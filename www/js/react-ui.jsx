@@ -73,7 +73,7 @@ var TagsNav = React.createClass({
         return (
             <button
             id="top-nav-button-tags"
-            className="btn pull-right icon-info icon-small hidden">
+            className="btn pull-right icon-info icon-small">
             </button>
         );
     }
@@ -83,10 +83,9 @@ var TagsNav = React.createClass({
 var DownloadNav = React.createClass({
     render: function() {
         return (
-            <button
+            <a
             id="top-nav-button-download"
-            className="btn pull-right icon-download icon-small hidden">
-            </button>
+            className="btn pull-right icon-download icon-small" href="#" download=""/>
         );
     }
 });
@@ -134,6 +133,7 @@ var Content = React.createClass({
             <div className="content" id="content">
                 <MainApp />
                 <ImageApp />
+                <TagsApp />
                 <SettingsApp />
             </div>
         );
@@ -155,6 +155,20 @@ var ImageApp = React.createClass({
         return (
             <div id="image-app">
                 <div id="image-view"></div>
+            </div>
+        );
+    }
+});
+
+var TagsApp = React.createClass({
+    render: function() {
+        return (
+            <div id="tags-app">
+                <div className="table-view" id="tags-view">
+                    <div className="table-view" id="tags-view-left"></div>
+                    <div id="tags-view-right"></div>
+
+                </div>
             </div>
         );
     }
@@ -186,13 +200,16 @@ var SettingsContainer = React.createClass({
     render: function() {
         return (
             <div id="settings-container" className="settings-view">
-            <form id="settings-form" className="settings-form" method="GET" action="#">
-                    <TagSearchSetting />
-                    <BaseUrlSetting />
-                    <SiteLoginSetting />
-                    <ListItemPerPageSetting />
-                    <UpdateSettingButton />
-            </form>
+                <form id="settings-form" className="settings-form" method="GET" action="#">
+                        <TagSearchSetting />
+                        <BaseUrlSetting />
+                        <SiteLoginSetting />
+                        <ListItemPerPageSetting />
+                        <ToggleLoggingSetting />
+                        <UpdateSettingButton />
+                </form>
+                <LoggingContainer />
+
             </div>
         );
     }
@@ -234,14 +251,20 @@ var SiteLoginSetting = React.createClass({
     render: function() {
         return (
                 <div id="setting-site-login-view" className="setting-site-login-view hidden">
-                    <label className="title">Username
+                    <label className="title">
+                        Site Username
                     </label>
 
                     <input
                         type="text"
                         id="setting-site-login-username-input"
                         className="setting-site-login-username-input"
-                        placeholder="username" />
+                        placeholder="username"
+                    />
+
+                    <label className="title">
+                        Site Password
+                    </label>
                     <input
                         type="text"
                         id="setting-site-login-password-input"
@@ -280,6 +303,21 @@ var ListItemPerPageSetting = React.createClass({
                         type="text"
                         className="setting-list-item-per-page-input"
                         placeholder="18" />
+                </div>
+        );
+    }
+});
+var ToggleLoggingSetting = React.createClass({
+    render: function() {
+        return (
+                <div id="setting-toggle-logging-view" className="setting-toggle-logging-view">
+                    <label className="title">Enable Logging
+                    </label>
+
+                    <input
+                        type="checkbox"
+                        className="setting-toggle-logging-input"
+                    />
                 </div>
         );
     }

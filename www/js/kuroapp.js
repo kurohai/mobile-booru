@@ -3,7 +3,7 @@ var kuroapp = {
     init: function() {
         this.log("KuroApp starting...");
         this.origin = window.location;
-        this.base_url = "https://booru.room208.org";
+        this.base_url = "https://danbooru.donmai.us/";
         this.site_username = "";
         this.site_password = "";
         this.path = "/posts.json";
@@ -15,10 +15,16 @@ var kuroapp = {
         this.log(this.template_dir);
         this.screenMain = document.getElementById("main-app");
         this.screenImage = document.getElementById("image-app");
+        this.screenTags = document.getElementById("tags-app");
         this.screenSettings = document.getElementById("settings-app");
+        this.buttonDownload = document.getElementById("top-nav-button-download");
+        this.buttonTags = document.getElementById("top-nav-button-tags");
+        // this.buttonTagsOff = document.getElementById("top-nav-button-tags");
         this.contentContainer = document.getElementById("content");
-
+        // this.dataStorage = cordova.file.dataDirectory;
+        this.logging = false;
         this.current_image = 0;
+        this.tagsActive = false;
 
         this.bindEvents();
         this.log("KuroApp initialized!");
@@ -51,12 +57,20 @@ var kuroapp = {
         }
     },
 
+    gotFS: function(fileSystem) {
+        kuroapp.log("got filesystem: "+fileSystem.name); // displays "persistent"
+        kuroapp.log(fileSystem.root.fullPath); // displays "/"
+        window.rootFS = fileSystem.root;
+    },
+
+
     bindEvents: function() {
         // bind events
         kuroapp.loadSettings();
         $(".tag-search-form").on("submit", function() {
             kuroapp.updateRefresh();
         });
+
 
 
         $(".setting-base-url-input").val(kuroapp.base_url);
@@ -102,6 +116,9 @@ var kuroapp = {
         kuroapp.mcButtonHome = new Hammer(homeButton);
         kuroapp.mcButtonRefresh = new Hammer(refreshButton);
         kuroapp.mcButtonSettings = new Hammer(settingsButton);
+        kuroapp.mcButtonDownload = new Hammer(kuroapp.buttonDownload);
+        kuroapp.mcButtonTags = new Hammer(kuroapp.buttonTags);
+        // kuroapp.mcButtonTagsOff = new Hammer(kuroapp.buttonTagsOff);
 
         // previous button setup main
         kuroapp.mcButtonPreviousPage = new Hammer.Manager(previousButton);
@@ -134,6 +151,32 @@ var kuroapp = {
             kuroapp.log(ev.type + " gesture detected on settings button.");
             kuroapp.activateSettingsApp();
         });
+
+        kuroapp.mcButtonDownload.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on download button.");
+            kuroapp.downloadImage();
+        });
+
+        kuroapp.mcButtonTags.on("tap", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on tags button.");
+            if (kuroapp.tagsActive == false) {
+                kuroapp.imageTags();
+                kuroapp.tagsActive = true;
+            } else if (kuroapp.tagsActive == true) {
+                kuroapp.activateImageApp();
+                kuroapp.pagingNextImage();
+                kuroapp.pagingPreviousImage();
+                kuroapp.tagsActive = false;
+            }
+        });
+
+        // kuroapp.mcButtonTagsOff.on("tap", function(ev) {
+        //     kuroapp.log(ev.type + " gesture detected on tags OFF button.");
+        //     kuroapp.activateImageApp();
+        //     kuroapp.pagingNextImage();
+        //     kuroapp.pagingPreviousImage();
+
+        // });
 
         kuroapp.mcButtonPreviousPage.on("tap press", function(ev) {
             kuroapp.log(ev.type + " gesture detected on main previous button.");
@@ -297,6 +340,7 @@ var kuroapp = {
         storage.setItem("site_password", kuroapp.site_password);
         storage.setItem("last_tags", $(".tag-input").val());
         storage.setItem("query_limit", kuroapp.url_queries.limit);
+        storage.setItem("logging", kuroapp.logging);
         log("saved base url: " + storage.getItem("base_url"))
         log("saved username: " + storage.getItem("site_username"))
         log("saved password: " + storage.getItem("site_password"))
@@ -314,6 +358,7 @@ var kuroapp = {
         kuroapp.site_password = storage.getItem("site_password") || kuroapp.site_password;
         kuroapp.url_queries.tags = storage.getItem("last_tags") || kuroapp.url_queries.tags;
         kuroapp.url_queries.limit = storage.getItem("query_limit") || kuroapp.url_queries.limit;
+        kuroapp.logging = storage.getItem("logging") || kuroapp.logging;
         log("loaded base url: " + storage.getItem("base_url"));
         log("loaded username: " + storage.getItem("site_username"));
         log("loaded password: " + storage.getItem("site_password"));
@@ -322,17 +367,31 @@ var kuroapp = {
         $(".tag-input").val(kuroapp.url_queries.tags);
 
         kuroapp.updateCurrentPath();
+        kuroapp.updateLogging();
     },
 
     updateSettings: function() {
         kuroapp.url_queries.page = 1;
         kuroapp.updateQueryLimit();
         kuroapp.changeAPI();
+        kuroapp.updateLogging();
         kuroapp.saveSettings();
 
         kuroapp.updateBaseURL();
         kuroapp.updateSiteLogin();
         kuroapp.refreshMainPage();
+    },
+
+    updateLogging: function() {
+        if ($(".setting-toggle-logging-input").prop('checked')){
+            kuroapp.logging = true;
+            kuroapp.log("Enabled Logging!");
+        } else {
+            kuroapp.logging = false;
+            $("#logging-container").empty();
+            kuroapp.log("Disabled Logging!");
+
+        }
     },
 
     updateBaseURL: function() {
@@ -410,9 +469,11 @@ var kuroapp = {
 
     log: function(logString) {
         // body...
-        var template = "<li class=\"table-view-cell content-padded\">{{text}}</li>";
         console.log(logString);
-        $("#logging-container").append(template.replace("{{text}}", logString));
+        if (kuroapp.logging) {
+            var template = "<li class=\"table-view-cell content-padded\">{{text}}</li>";
+            $("#logging-container").append(template.replace("{{text}}", logString));
+        };
     },
 
     get: function(url) {
@@ -498,15 +559,20 @@ var kuroapp = {
     },
 
     loadFullImage: function(imageData) {
-        imageData.url = kuroapp.formatFullURL(imageData.file_url)
+        imageData.url = kuroapp.formatFullURL(imageData.file_url);
         kuroapp.log("loading full image for {{id}}".replace("{{id}}", imageData.id));
-        var newImage = '<img id="img-{{id}}" class="hidden" src="{{file_url}}" alt="use id here later" />'
+        var newImage = '<img id="img-{{id}}" class="hidden" src="{{file_url}}" alt="use id here later" />';
         var imageLine = newImage.replace("{{file_url}}", imageData.url);
         imageLine = imageLine.replace("{{id}}", imageData.id);
         kuroapp.log("full image loading " + imageData.url);
         $("#image-view").append(imageLine);
         kuroapp.setBackroundImage(imageData);
         kuroapp.current_image = imageData.id;
+        kuroapp.current_image_url = imageData.url;
+        kuroapp.tag_list = imageData.tag_string.split(" ");
+        // kuroapp.buttonDownload.setAttribute('href', kuroapp.current_image_url);
+        // kuroapp.buttonDownload.setAttribute('download', kuroapp.current_image);
+
     },
 
     setBackroundImage: function(imageData) {
@@ -522,55 +588,98 @@ var kuroapp = {
         kuroapp.screenMain.setAttribute('style', 'display: block;');
         kuroapp.screenImage.setAttribute('style', 'display: none;');
         kuroapp.screenSettings.setAttribute('style', 'display: none;');
+        kuroapp.buttonDownload.setAttribute('style', 'display: none;');
+        kuroapp.buttonTags.setAttribute('style', 'display: none;');
         $(".content").css('background-image', 'none');
-
+        kuroapp.screenTags.setAttribute('style', 'display: none;');
+        $("#tags-view-left").empty();
+        $("#tags-view-right").empty();
 
         kuroapp.mcButtonPreviousPage.get('tap').set({ enable: true });
         kuroapp.mcButtonNextPage.get('tap').set({ enable: true });
 
         kuroapp.mcButtonPreviousImage.get('tap').set({ enable: false });
         kuroapp.mcButtonNextImage.get('tap').set({ enable: false });
+        kuroapp.mcButtonDownload.get('tap').set({ enable: false });
+        kuroapp.mcButtonTags.get('tap').set({ enable: false });
+        // kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
+
         kuroapp.disableZoom();
         HammerPinch.resetScreenScale();
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownMainScreen, false);
+        document.removeEventListener("keydown", kuroapp.tagHotkeys, false);
 
-        document.removeEventListener("keypress", kuroapp.imageHotkeys, false);
-        document.addEventListener("keypress", kuroapp.mainHotkeys, false);
+        // document.removeEventListener("keypress", kuroapp.imageHotkeys, false);
+        // document.addEventListener("keypress", kuroapp.mainHotkeys, false);
+        document.removeEventListener("keydown", kuroapp.imageHotkeys, false);
+        document.addEventListener("keydown", kuroapp.mainHotkeys, false);
 
         kuroapp.log("all hardware buttons complete")
     },
 
     mainHotkeys: function() {
         kuroapp.log('keypress: ' + event.keyCode);
-        if (event.keyCode == 97) {
+        if (event.keyCode == 97 || event.keyCode == 37 || event.keyCode == 65) {
             kuroapp.pagingPreviousMain();
-        } else if (event.keyCode == 100) {
+        } else if (event.keyCode == 100 || event.keyCode == 39 || event.keyCode == 68) {
             kuroapp.pagingNextMain();
-        } else if (event.keyCode == 113) {
+        } else if (event.keyCode == 113 || event.keyCode == 81) {
             kuroapp.activateMainApp();
+        } else if (event.keyCode == 101 || event.keyCode == 69) {
+            kuroapp.activateSettingsApp();
+        } else if (event.keyCode == 32) {
+            kuroapp.activateImageApp();
+            kuroapp.pagingNextImage();
         }
     },
 
     imageHotkeys: function() {
         kuroapp.log('keypress: ' + event.keyCode);
-        if (event.keyCode == 97) {
+        if (event.keyCode == 97 || event.keyCode == 37 || event.keyCode == 65) {
             kuroapp.pagingPreviousImage();
-        } else if (event.keyCode == 100) {
+        } else if (event.keyCode == 100 || event.keyCode == 39 || event.keyCode == 68) {
             kuroapp.pagingNextImage();
-        } else if (event.keyCode == 113) {
+        } else if (event.keyCode == 113 || event.keyCode == 81) {
             kuroapp.activateMainApp();
+        } else if (event.keyCode == 101 || event.keyCode == 69) {
+            kuroapp.activateSettingsApp();
+        } else if (event.keyCode == 116 || event.keyCode == 84) {
+            kuroapp.imageTags();
         }
     },
 
+    tagHotkeys: function() {
+        kuroapp.log('keypress: ' + event.keyCode);
+        if (event.keyCode == 97 || event.keyCode == 37 || event.keyCode == 65) {
+            kuroapp.pagingPreviousImage();
+        } else if (event.keyCode == 100 || event.keyCode == 39 || event.keyCode == 68) {
+            kuroapp.pagingNextImage();
+        } else if (event.keyCode == 113 || event.keyCode == 81) {
+            kuroapp.activateMainApp();
+        } else if (event.keyCode == 101 || event.keyCode == 69) {
+            kuroapp.activateSettingsApp();
+        } else if (event.keyCode == 116 || event.keyCode == 84) {
+            kuroapp.activateImageApp();
+            kuroapp.pagingNextImage();
+            kuroapp.pagingPreviousImage();
+
+        }
+    },
 
     activateImageApp: function() {
         // body...
         kuroapp.log("activating scan app");
         kuroapp.screenMain.setAttribute('style', 'display: none;');
+        kuroapp.screenTags.setAttribute('style', 'display: none;');
         kuroapp.screenImage.setAttribute('style', 'display: block;');
         kuroapp.screenSettings.setAttribute('style', 'display: none;');
+        kuroapp.buttonDownload.setAttribute('style', 'display: block;');
+        kuroapp.buttonTags.setAttribute('style', 'display: block;');
+        $("#tags-view-left").empty();
+        $("#tags-view-right").empty();
 
+        kuroapp.tagsActive = false;
 
         // stop hammer for main
         kuroapp.mcButtonPreviousPage.get('tap').set({ enable: false });
@@ -579,13 +688,236 @@ var kuroapp = {
         // start hammer for image
         kuroapp.mcButtonPreviousImage.get('tap').set({ enable: true });
         kuroapp.mcButtonNextImage.get('tap').set({ enable: true });
+        kuroapp.mcButtonDownload.get('tap').set({ enable: true });
+        kuroapp.mcButtonTags.get('tap').set({ enable: true });
+        // kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
         kuroapp.enableZoom();
         HammerPinch.resetScreenScale();
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownImageScreen, false);
-        document.removeEventListener("keypress", kuroapp.mainHotkeys, false);
-        document.addEventListener("keypress", kuroapp.imageHotkeys, false);
+        // document.removeEventListener("keypress", kuroapp.mainHotkeys, false);
+        document.removeEventListener("keydown", kuroapp.mainHotkeys, false);
+        // document.addEventListener("keypress", kuroapp.imageHotkeys, false);
+        document.addEventListener("keydown", kuroapp.imageHotkeys, false);
+        document.removeEventListener("keydown", kuroapp.tagHotkeys, false);
 
+    },
+
+
+    activateSettingsApp: function() {
+        // body...
+        kuroapp.log("activating settings app");
+        kuroapp.screenMain.setAttribute('style', 'display: none;');
+        kuroapp.screenImage.setAttribute('style', 'display: none;');
+        kuroapp.screenTags.setAttribute('style', 'display: none;');
+        kuroapp.screenSettings.setAttribute('style', 'display: block;');
+        kuroapp.buttonDownload.setAttribute('style', 'display: none;');
+        kuroapp.buttonTags.setAttribute('style', 'display: none;');
+        $(".content").css('background-image', 'none');
+        kuroapp.disableZoom();
+        HammerPinch.resetScreenScale();
+        document.addEventListener("backbutton", kuroapp.onBackKeyDownSettingsScreen, false);
+        // document.removeEventListener("keypress", kuroapp.mainHotkeys, false);
+        // document.removeEventListener("keypress", kuroapp.imageHotkeys, false);
+        document.removeEventListener("keydown", kuroapp.mainHotkeys, false);
+        document.removeEventListener("keydown", kuroapp.imageHotkeys, false);
+        kuroapp.mcButtonDownload.get('tap').set({ enable: false });
+        kuroapp.mcButtonTags.get('tap').set({ enable: false });
+        // kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
+        $("#tags-view-left").empty();
+        $("#tags-view-right").empty();
+        $("#tag-input").focus();
+        document.removeEventListener("keydown", kuroapp.tagHotkeys, false);
+
+    },
+
+
+    tagLink: function(taghtml) {
+        kuroapp.log(taghtml);
+        var tag = taghtml;
+        $(".tag-input").val(tag);
+        $("#tags-view-left").empty();
+        $("#tags-view-right").empty();
+        kuroapp.updateRefresh();
+    },
+
+    tagRefine: function(taghtml) {
+        kuroapp.log(taghtml);
+        var tag = $(".tag-input").val() + " " + taghtml;
+        $(".tag-input").val(tag);
+        $("#tags-view-left").empty();
+        $("#tags-view-right").empty();
+        kuroapp.updateRefresh();
+    },
+
+
+    imageTags: function() {
+        kuroapp.log("initiating tag view");
+        kuroapp.log("tags: " + kuroapp.tag_list.length);
+        kuroapp.screenMain.setAttribute('style', 'display: none;');
+        kuroapp.screenImage.setAttribute('style', 'display: none;');
+        $(".content").css('background-image', 'none');
+        kuroapp.disableZoom();
+        kuroapp.screenTags.setAttribute('style', 'display: block;');
+        kuroapp.screenSettings.setAttribute('style', 'display: none;');
+        kuroapp.buttonTags.setAttribute('style', 'display: block;');
+        var tag_html_left = "<div>{{tag}}</div>";
+        var tag_html_right = "<div>{{tag}}</div>";
+        $("#tags-view").css('display', 'inline');
+        $("#tags-view").css('width', '100%');
+        $("#tags-view-left").css('display', 'block');
+        $("#tags-view-left").css('float', 'left');
+        $("#tags-view-left").css('width', '40%');
+        $("#tags-view-right").css('display', 'block');
+        $("#tags-view-right").css('float', 'right');
+        $("#tags-view-right").css('width', '40%');
+        kuroapp.tagsActive = true;
+        document.addEventListener("keydown", kuroapp.tagHotkeys, false);
+        // kuroapp.mcButtonTags.get('tap').set({ enable: true });
+        // kuroapp.mcButtonTagsOff.get('tap').set({ enable: true });
+
+
+        for( var i = 0; i <= kuroapp.tag_list.length; i++) {
+            kuroapp.log(kuroapp.tag_list[i]);
+            // tag_html_left = "<div class='table-view-cell'><div class='icon icon-minus>'></div>";
+            tag_html_left = "<div class='tag-link' onclick='kuroapp.tagLink(this.innerHTML);'>{{tag}}</div>";
+            // tag_html_left = tag_html_left + "<div class='icon icon-plus>'></div></div>";
+            // tag_html_left = "<div class='table-view-cell'><div class='icon icon-minus>'></div>";
+            // tag_html_left = tag_html_left + "<div class='tag-link' onclick='kuroapp.tagLink(this.innerHTML);'>{{tag}}</div>";
+            // tag_html_left = tag_html_left + "<div class='icon icon-plus>'></div></div>";
+            $("#tags-view-left").append(tag_html_left.replace("{{tag}}", kuroapp.tag_list[i]));
+            tag_html_right = "<div class='tag-refine' onclick='kuroapp.tagRefine(this.innerHTML);'>{{tag}}</div>";
+            $("#tags-view-right").append(tag_html_right.replace("{{tag}}", kuroapp.tag_list[i]));
+
+        }
+        // kuroapp.mcButtonDownload.get('tap').set({ enable: true });
+
+
+    },
+
+    downloadToDevice: function(fileurl) {
+      var blob = null;
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", fileurl);
+      xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
+      xhr.onload = function()
+      {
+            blob = xhr.response;//xhr.response is now a blob object
+            console.log(blob);
+            var storageLocation = "";
+         // switch (device.platform) {
+           kuroapp.log("platform id: " + window.cordova.platformId);
+
+           switch (window.cordova.platformId) {
+               case "android":
+                   storageLocation = 'file:///storage/emulated/0/';
+                   break;
+               case "iOS":
+                   storageLocation = cordova.file.documentsDirectory;
+                   break;
+         }
+         kuroapp.log("storage location: " + storageLocation);
+         var folderpath = storageLocation + "Download";
+         kuroapp.log("folderpath: " + folderpath);
+
+         // var filename = "Myimg.png";
+         var filename = kuroapp.current_image + ".png";
+         var DataBlob = blob;
+          window.resolveLocalFileSystemURL(folderpath, function(dir) {
+            dir.getFile(filename, {create:true}, function(file) {
+                    file.createWriter(function(fileWriter) {
+                        fileWriter.write(DataBlob);
+                        //Download was succesfull
+                    }, function(err){
+                      // failed
+                      console.log(err);
+                    });
+            });
+          });
+      }
+      xhr.send();
+    },
+
+    downloadImage: function() {
+        // body...
+        kuroapp.log("initiating image download");
+        // window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+        // kuroapp.log("rfs: " + window.requestFileSystem);
+
+        // window.requestFileSystem(1, 0, kuroapp.gotFS, function(){
+        //     kuroapp.log("error requesting LocalFileSystem");
+        // });
+        // window.requestFileSystem(1, 0, function(fileSystem) {
+        //   fileSystem.root.getFile('Download/' + kuroapp.current_image, {
+        //     create: true,
+        //     exclusive: false
+        //   }, function(fileEntry) {
+        //     var localPath = fileEntry.fullPath,
+        //         fileTransfer = new FileTransfer();
+        //     fileTransfer.download(kuroapp.current_image_url, localPath, function(entry) {
+        //       kuroapp.log("download complete: " + entry.fullPath);
+        //     }, function (error) {
+        //     kuroapp.log('download error: ' + error.code);
+        //     kuroapp.log("download error source " + error.source);
+        //     kuroapp.log("download error target " + error.target);
+        //   });
+        //   }, kuroapp.downloadError);
+        // }, kuroapp.downloadError);
+        kuroapp.log("downloading url: " + kuroapp.current_image_url);
+        // DownloadToDevice(kuroapp.current_image_url);
+        kuroapp.downloadToDevice(kuroapp.current_image_url);
+        // window.resolveLocalFileSystemURL("file:///persistent/", function(fileEntry) {
+        //   var filepath = fileEntry.toURL() + kuroapp.current_image;
+        //   kuroapp.log("file path: " + filepath);
+        //   var fileTransfer = new FileTransfer();
+        //   kuroapp.log('FilePath ' + filepath);
+        //   fileTransfer.download(kuroapp.current_image_url, filepath,
+        //     function (fileEntry) {
+        //       z.log("download complete: " + fileEntry.toURL());
+        //     },
+        //     function (error) {
+        //       kuroapp.log("ErrorDownload: " + JSON.stringify(error));
+        //     },
+        //     true,
+        //     {}
+        //   );
+        // });
+
+
+
+
+        // buttonDownload.attr('href', kuroapp.current_image_url);
+        // buttonDownload.attr('download', kuroapp.current_image);
+        // window.location.href = kuroapp.current_image_url;
+        // document
+        // var fileTransfer = new FileTransfer();
+        // var uri = encodeURI(kuroapp.current_image_url);
+        // var fileURL = window.rootFS.toURL() + kuroapp.current_image.toString();
+
+        // fileTransfer.download(
+        //     uri,
+        //     fileURL,
+        //     function(entry) {
+        //         kuroapp.log("download complete: " + entry.toURL());
+        //     },
+        //     function(error) {
+        //         kuroapp.log("download error source " + error.source);
+        //         kuroapp.log("download error target " + error.target);
+        //         kuroapp.log("download error code" + error.code);
+        //     },
+        //     false
+        //     // {
+        //     //     headers: {
+        //     //         "Authorization": "Basic dGVzdHVzZXJuYW1lOnRlc3RwYXNzd29yZA=="
+        //     //     }
+        //     // }
+        // );
+
+
+    },
+
+    downloadError: function() {
+        kuroapp.log("err in dl")
     },
 
     onBackKeyDownImageScreen: function() {
@@ -597,23 +929,7 @@ var kuroapp = {
     },
 
     onBackKeyDownSettingsScreen: function() {
-        kuroapp.refreshMainPage();
-    },
-
-
-    activateSettingsApp: function() {
-        // body...
-        kuroapp.log("activating settings app");
-        kuroapp.screenMain.setAttribute('style', 'display: none;');
-        kuroapp.screenImage.setAttribute('style', 'display: none;');
-        kuroapp.screenSettings.setAttribute('style', 'display: block;');
-        $(".content").css('background-image', 'none');
-        kuroapp.disableZoom();
-        HammerPinch.resetScreenScale();
-        document.addEventListener("backbutton", kuroapp.onBackKeyDownSettingsScreen, false);
-        document.removeEventListener("keypress", kuroapp.mainHotkeys, false);
-        document.removeEventListener("keypress", kuroapp.imageHotkeys, false);
-
+        kuroapp.activateMainApp();
     },
 
     enableZoom: function() {
@@ -798,4 +1114,41 @@ if (typeof String.prototype.startsWith != 'function') {
   };
 }
 
+
 var log = kuroapp.log
+
+// function DownloadToDevice(fileurl) {
+//   var blob = null;
+//   var xhr = new XMLHttpRequest();
+//   xhr.open("GET", fileurl);
+//   xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
+//   xhr.onload = function()
+//   {
+//       blob = xhr.response;//xhr.response is now a blob object
+//       console.log(blob);
+//       var storageLocation = "";
+//      switch (device.platform) {
+//          case "Android":
+//              storageLocation = 'file:///storage/emulated/0/';
+//              break;
+//          case "iOS":
+//              storageLocation = cordova.file.documentsDirectory;
+//              break;
+//      }
+//      var folderpath = storageLocation + "Download";
+//      var filename = "Myimg.png";
+//      var DataBlob = blob;
+//       window.resolveLocalFileSystemURL(folderpath, function(dir) {
+//         dir.getFile(filename, {create:true}, function(file) {
+//                 file.createWriter(function(fileWriter) {
+//                     fileWriter.write(DataBlob);
+//                     //Download was succesfull
+//                 }, function(err){
+//                   // failed
+//                   console.log(err);
+//                 });
+//         });
+//       });
+//   }
+//   xhr.send();
+// }

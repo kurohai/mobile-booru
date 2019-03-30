@@ -1,15 +1,28 @@
 {
-    "prepare_queue": {
-        "installed": [],
-        "uninstalled": []
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.kurohai.mobilebooru"
+    }
+  },
+  "dependent_plugins": {
+    "com.admob.plugin": {
+      "PACKAGE_NAME": "com.kurohai.mobilebooru"
     },
-    "config_munge": {
-        "files": {}
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "com.kurohai.mobilebooru"
     },
-    "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.kurohai.mobilebooru"
-        }
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.kurohai.mobilebooru"
     },
-    "dependent_plugins": {}
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "com.kurohai.mobilebooru"
+    }
+  }
 }
