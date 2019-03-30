@@ -164,6 +164,7 @@ label.title {
 .tag-input {
     width: 30em;
     float: right;
+    z-index: -1;
 }
 
 .settings-label {

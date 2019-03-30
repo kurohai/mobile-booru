@@ -164,8 +164,8 @@ var TagsApp = React.createClass({
     render: function() {
         return (
             <div id="tags-app">
-                <div id="tags-view">
-                    <div id="tags-view-left"></div>
+                <div className="table-view" id="tags-view">
+                    <div className="table-view" id="tags-view-left"></div>
                     <div id="tags-view-right"></div>
 
                 </div>

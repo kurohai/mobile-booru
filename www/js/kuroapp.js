@@ -3,7 +3,7 @@ var kuroapp = {
     init: function() {
         this.log("KuroApp starting...");
         this.origin = window.location;
-        this.base_url = "https://booru.room208.org";
+        this.base_url = "https://danbooru.donmai.us/";
         this.site_username = "";
         this.site_password = "";
         this.path = "/posts.json";
@@ -116,6 +116,7 @@ var kuroapp = {
         kuroapp.mcButtonSettings = new Hammer(settingsButton);
         kuroapp.mcButtonDownload = new Hammer(kuroapp.buttonDownload);
         kuroapp.mcButtonTags = new Hammer(kuroapp.buttonTags);
+        kuroapp.mcButtonTagsOff = new Hammer(kuroapp.buttonTags);
 
         // previous button setup main
         kuroapp.mcButtonPreviousPage = new Hammer.Manager(previousButton);
@@ -157,6 +158,11 @@ var kuroapp = {
         kuroapp.mcButtonTags.on("tap press", function(ev) {
             kuroapp.log(ev.type + " gesture detected on tags button.");
             kuroapp.imageTags();
+        });
+
+        kuroapp.mcButtonTagsOff.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on tags button.");
+            kuroapp.activateImageApp();
         });
 
         kuroapp.mcButtonPreviousPage.on("tap press", function(ev) {
@@ -583,40 +589,67 @@ var kuroapp = {
         kuroapp.mcButtonNextImage.get('tap').set({ enable: false });
         kuroapp.mcButtonDownload.get('tap').set({ enable: false });
         kuroapp.mcButtonTags.get('tap').set({ enable: false });
+        kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
 
         kuroapp.disableZoom();
         HammerPinch.resetScreenScale();
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownMainScreen, false);
+        document.removeEventListener("keydown", kuroapp.tagHotkeys, false);
 
-        document.removeEventListener("keypress", kuroapp.imageHotkeys, false);
-        document.addEventListener("keypress", kuroapp.mainHotkeys, false);
+        // document.removeEventListener("keypress", kuroapp.imageHotkeys, false);
+        // document.addEventListener("keypress", kuroapp.mainHotkeys, false);
+        document.removeEventListener("keydown", kuroapp.imageHotkeys, false);
+        document.addEventListener("keydown", kuroapp.mainHotkeys, false);
 
         kuroapp.log("all hardware buttons complete")
     },
 
     mainHotkeys: function() {
         kuroapp.log('keypress: ' + event.keyCode);
-        if (event.keyCode == 97) {
+        if (event.keyCode == 97 || event.keyCode == 37 || event.keyCode == 65) {
             kuroapp.pagingPreviousMain();
-        } else if (event.keyCode == 100) {
+        } else if (event.keyCode == 100 || event.keyCode == 39 || event.keyCode == 68) {
             kuroapp.pagingNextMain();
-        } else if (event.keyCode == 113) {
+        } else if (event.keyCode == 113 || event.keyCode == 81) {
             kuroapp.activateMainApp();
+        } else if (event.keyCode == 101 || event.keyCode == 69) {
+            kuroapp.activateSettingsApp();
+        } else if (event.keyCode == 32) {
+            kuroapp.activateImageApp();
+            kuroapp.pagingNextImage();
         }
     },
 
     imageHotkeys: function() {
         kuroapp.log('keypress: ' + event.keyCode);
-        if (event.keyCode == 97) {
+        if (event.keyCode == 97 || event.keyCode == 37 || event.keyCode == 65) {
             kuroapp.pagingPreviousImage();
-        } else if (event.keyCode == 100) {
+        } else if (event.keyCode == 100 || event.keyCode == 39 || event.keyCode == 68) {
             kuroapp.pagingNextImage();
-        } else if (event.keyCode == 113) {
+        } else if (event.keyCode == 113 || event.keyCode == 81) {
             kuroapp.activateMainApp();
+        } else if (event.keyCode == 101 || event.keyCode == 69) {
+            kuroapp.activateSettingsApp();
+        } else if (event.keyCode == 116 || event.keyCode == 84) {
+            kuroapp.imageTags();
         }
     },
 
+    tagHotkeys: function() {
+        kuroapp.log('keypress: ' + event.keyCode);
+        if (event.keyCode == 97 || event.keyCode == 37 || event.keyCode == 65) {
+            kuroapp.pagingPreviousImage();
+        } else if (event.keyCode == 100 || event.keyCode == 39 || event.keyCode == 68) {
+            kuroapp.pagingNextImage();
+        } else if (event.keyCode == 113 || event.keyCode == 81) {
+            kuroapp.activateMainApp();
+        } else if (event.keyCode == 101 || event.keyCode == 69) {
+            kuroapp.activateSettingsApp();
+        } else if (event.keyCode == 116 || event.keyCode == 84) {
+            kuroapp.activateImageApp();
+        }
+    },
 
     activateImageApp: function() {
         // body...
@@ -645,8 +678,11 @@ var kuroapp = {
         HammerPinch.resetScreenScale();
 
         document.addEventListener("backbutton", kuroapp.onBackKeyDownImageScreen, false);
-        document.removeEventListener("keypress", kuroapp.mainHotkeys, false);
-        document.addEventListener("keypress", kuroapp.imageHotkeys, false);
+        // document.removeEventListener("keypress", kuroapp.mainHotkeys, false);
+        document.removeEventListener("keydown", kuroapp.mainHotkeys, false);
+        // document.addEventListener("keypress", kuroapp.imageHotkeys, false);
+        document.addEventListener("keydown", kuroapp.imageHotkeys, false);
+        document.removeEventListener("keydown", kuroapp.tagHotkeys, false);
 
     },
 
@@ -664,13 +700,16 @@ var kuroapp = {
         kuroapp.disableZoom();
         HammerPinch.resetScreenScale();
         document.addEventListener("backbutton", kuroapp.onBackKeyDownSettingsScreen, false);
-        document.removeEventListener("keypress", kuroapp.mainHotkeys, false);
-        document.removeEventListener("keypress", kuroapp.imageHotkeys, false);
+        // document.removeEventListener("keypress", kuroapp.mainHotkeys, false);
+        // document.removeEventListener("keypress", kuroapp.imageHotkeys, false);
+        document.removeEventListener("keydown", kuroapp.mainHotkeys, false);
+        document.removeEventListener("keydown", kuroapp.imageHotkeys, false);
         kuroapp.mcButtonDownload.get('tap').set({ enable: false });
         kuroapp.mcButtonTags.get('tap').set({ enable: false });
         $("#tags-view-left").empty();
         $("#tags-view-right").empty();
-
+        $("#tag-input").focus();
+        document.removeEventListener("keydown", kuroapp.tagHotkeys, false);
 
     },
 
@@ -715,19 +754,70 @@ var kuroapp = {
         $("#tags-view-right").css('float', 'right');
         $("#tags-view-right").css('width', '40%');
 
+        document.addEventListener("keydown", kuroapp.tagHotkeys, false);
+
 
         for( var i = 0; i <= kuroapp.tag_list.length; i++) {
             kuroapp.log(kuroapp.tag_list[i]);
+            // tag_html_left = "<div class='table-view-cell'><div class='icon icon-minus>'></div>";
             tag_html_left = "<div class='tag-link' onclick='kuroapp.tagLink(this.innerHTML);'>{{tag}}</div>";
+            // tag_html_left = tag_html_left + "<div class='icon icon-plus>'></div></div>";
+            // tag_html_left = "<div class='table-view-cell'><div class='icon icon-minus>'></div>";
+            // tag_html_left = tag_html_left + "<div class='tag-link' onclick='kuroapp.tagLink(this.innerHTML);'>{{tag}}</div>";
+            // tag_html_left = tag_html_left + "<div class='icon icon-plus>'></div></div>";
             $("#tags-view-left").append(tag_html_left.replace("{{tag}}", kuroapp.tag_list[i]));
             tag_html_right = "<div class='tag-refine' onclick='kuroapp.tagRefine(this.innerHTML);'>{{tag}}</div>";
             $("#tags-view-right").append(tag_html_right.replace("{{tag}}", kuroapp.tag_list[i]));
 
         }
         // kuroapp.mcButtonDownload.get('tap').set({ enable: true });
-        // kuroapp.mcButtonTags.get('tap').set({ enable: true });
+        kuroapp.mcButtonTags.get('tap').set({ enable: false });
+        kuroapp.mcButtonTagsOff.get('tap').set({ enable: true });
 
 
+    },
+
+    downloadToDevice: function(fileurl) {
+      var blob = null;
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", fileurl);
+      xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
+      xhr.onload = function()
+      {
+            blob = xhr.response;//xhr.response is now a blob object
+            console.log(blob);
+            var storageLocation = "";
+         // switch (device.platform) {
+           kuroapp.log("platform id: " + window.cordova.platformId);
+
+           switch (window.cordova.platformId) {
+               case "android":
+                   storageLocation = 'file:///storage/emulated/0/';
+                   break;
+               case "iOS":
+                   storageLocation = cordova.file.documentsDirectory;
+                   break;
+         }
+         kuroapp.log("storage location: " + storageLocation);
+         var folderpath = storageLocation + "Download";
+         kuroapp.log("folderpath: " + folderpath);
+
+         // var filename = "Myimg.png";
+         var filename = kuroapp.current_image + ".png";
+         var DataBlob = blob;
+          window.resolveLocalFileSystemURL(folderpath, function(dir) {
+            dir.getFile(filename, {create:true}, function(file) {
+                    file.createWriter(function(fileWriter) {
+                        fileWriter.write(DataBlob);
+                        //Download was succesfull
+                    }, function(err){
+                      // failed
+                      console.log(err);
+                    });
+            });
+          });
+      }
+      xhr.send();
     },
 
     downloadImage: function() {
@@ -755,22 +845,25 @@ var kuroapp = {
         //   });
         //   }, kuroapp.downloadError);
         // }, kuroapp.downloadError);
-        window.resolveLocalFileSystemURL("file:///persistent/", function(fileEntry) {
-          var filepath = fileEntry.toURL() + kuroapp.current_image;
-          kuroapp.log("file path: " + filepath);
-          var fileTransfer = new FileTransfer();
-          kuroapp.log('FilePath ' + filepath);
-          fileTransfer.download(kuroapp.current_image_url, filepath,
-            function (fileEntry) {
-              z.log("download complete: " + fileEntry.toURL());
-            },
-            function (error) {
-              kuroapp.log("ErrorDownload: " + JSON.stringify(error));
-            },
-            true,
-            {}
-          );
-        });
+        kuroapp.log("downloading url: " + kuroapp.current_image_url);
+        // DownloadToDevice(kuroapp.current_image_url);
+        kuroapp.downloadToDevice(kuroapp.current_image_url);
+        // window.resolveLocalFileSystemURL("file:///persistent/", function(fileEntry) {
+        //   var filepath = fileEntry.toURL() + kuroapp.current_image;
+        //   kuroapp.log("file path: " + filepath);
+        //   var fileTransfer = new FileTransfer();
+        //   kuroapp.log('FilePath ' + filepath);
+        //   fileTransfer.download(kuroapp.current_image_url, filepath,
+        //     function (fileEntry) {
+        //       z.log("download complete: " + fileEntry.toURL());
+        //     },
+        //     function (error) {
+        //       kuroapp.log("ErrorDownload: " + JSON.stringify(error));
+        //     },
+        //     true,
+        //     {}
+        //   );
+        // });
 
 
 
@@ -818,7 +911,7 @@ var kuroapp = {
     },
 
     onBackKeyDownSettingsScreen: function() {
-        kuroapp.refreshMainPage();
+        kuroapp.activateMainApp();
     },
 
     enableZoom: function() {
@@ -1005,3 +1098,39 @@ if (typeof String.prototype.startsWith != 'function') {
 
 
 var log = kuroapp.log
+
+// function DownloadToDevice(fileurl) {
+//   var blob = null;
+//   var xhr = new XMLHttpRequest();
+//   xhr.open("GET", fileurl);
+//   xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
+//   xhr.onload = function()
+//   {
+//       blob = xhr.response;//xhr.response is now a blob object
+//       console.log(blob);
+//       var storageLocation = "";
+//      switch (device.platform) {
+//          case "Android":
+//              storageLocation = 'file:///storage/emulated/0/';
+//              break;
+//          case "iOS":
+//              storageLocation = cordova.file.documentsDirectory;
+//              break;
+//      }
+//      var folderpath = storageLocation + "Download";
+//      var filename = "Myimg.png";
+//      var DataBlob = blob;
+//       window.resolveLocalFileSystemURL(folderpath, function(dir) {
+//         dir.getFile(filename, {create:true}, function(file) {
+//                 file.createWriter(function(fileWriter) {
+//                     fileWriter.write(DataBlob);
+//                     //Download was succesfull
+//                 }, function(err){
+//                   // failed
+//                   console.log(err);
+//                 });
+//         });
+//       });
+//   }
+//   xhr.send();
+// }
