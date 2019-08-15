@@ -36,7 +36,7 @@ var kuroapp = {
         if (kuroapp.base_url.indexOf("safebooru") > 0) {
             // load danbooru api
             kuroapp.log("API changed to: danbooru");
-            this.path = "/posts.json";
+            kuroapp.path = "/posts.json";
         }
         if (kuroapp.base_url.indexOf("e621") > 0) {
             // load e621 api
@@ -49,11 +49,15 @@ var kuroapp = {
         } else if (kuroapp.base_url.indexOf("konachan") > 0) {
             // load konachan api
             kuroapp.log("API changed to: konachan");
-            this.path = "/post.json";
+            kuroapp.path = "/post.json";
         } else if (kuroapp.base_url.indexOf("room208") > 0) {
             // load room208 api
             kuroapp.log("API changed to: danbooru");
             kuroapp.path = "/posts.json";
+        } else if (kuroapp.base_url.indexOf("yande") > 0) {
+            // load yande api
+            kuroapp.log("API changed to: yande");
+            kuroapp.path = "/post.json";
         }
     },
 
@@ -341,12 +345,15 @@ var kuroapp = {
         storage.setItem("last_tags", $(".tag-input").val());
         storage.setItem("query_limit", kuroapp.url_queries.limit);
         storage.setItem("logging", kuroapp.logging);
+        storage.setItem("tags_favorite", kuroapp.tags_favorite);
+        storage.setItem("tags_recent", kuroapp.tags_recent);
         log("saved base url: " + storage.getItem("base_url"))
         log("saved username: " + storage.getItem("site_username"))
         log("saved password: " + storage.getItem("site_password"))
-        log("saved last tags: " + storage.getItem("last_tags"))
+        log("saved tags_recent: " + storage.getItem("tags_recent"))
+        log("saved tags_favorite: " + storage.getItem("tags_favorite"))
         log("saved query limit: " + storage.getItem("query_limit"))
-
+        kuroapp.updateCurrentPath();
     },
 
     loadSettings: function() {
@@ -359,6 +366,8 @@ var kuroapp = {
         kuroapp.url_queries.tags = storage.getItem("last_tags") || kuroapp.url_queries.tags;
         kuroapp.url_queries.limit = storage.getItem("query_limit") || kuroapp.url_queries.limit;
         kuroapp.logging = storage.getItem("logging") || kuroapp.logging;
+        kuroapp.tags_favorite = storage.getItem("tags_favorite") || kuroapp.tags_favorite;
+        kuroapp.tags_recent = storage.getItem("tags_recent") || kuroapp.tags_recent;
         log("loaded base url: " + storage.getItem("base_url"));
         log("loaded username: " + storage.getItem("site_username"));
         log("loaded password: " + storage.getItem("site_password"));
@@ -569,7 +578,12 @@ var kuroapp = {
         kuroapp.setBackroundImage(imageData);
         kuroapp.current_image = imageData.id;
         kuroapp.current_image_url = imageData.url;
-        kuroapp.tag_list = imageData.tag_string.split(" ");
+        if (imageData.tag_string != null) {
+            kuroapp.tag_list = imageData.tag_string.split(" ");
+        } else {
+            kuroapp.tag_list = imageData.tags.split(" ");
+
+        }
         // kuroapp.buttonDownload.setAttribute('href', kuroapp.current_image_url);
         // kuroapp.buttonDownload.setAttribute('download', kuroapp.current_image);
 
