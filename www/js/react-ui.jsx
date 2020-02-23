@@ -79,13 +79,24 @@ var TagsNav = React.createClass({
     }
 });
 
-// tags
+// download button
 var DownloadNav = React.createClass({
     render: function() {
         return (
             <a
             id="top-nav-button-download"
             className="btn pull-right icon-download icon-small" href="#" download=""/>
+        );
+    }
+});
+
+// favorite button
+var FavoriteNav = React.createClass({
+    render: function() {
+        return (
+            <a
+            id="top-nav-button-favorite"
+            className="btn pull-right icon-favirote icon-small" href="#"/>
         );
     }
 });
@@ -104,6 +115,7 @@ var BaseHeader = React.createClass({
                 <PreviousNav />
                 <TagsNav />
                 <DownloadNav />
+		<FavoriteNav />
             </header>
         );
     }

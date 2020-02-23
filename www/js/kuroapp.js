@@ -9,7 +9,7 @@ var kuroapp = {
         this.path = "/posts.json";
         this.path_tags = "/tags.json";
         this.url_queries = {};
-        this.url_queries.limit = "18";
+        this.url_queries.limit = "36";
         this.url_queries.page = 1;
         this.updateCurrentPath();
         this.log(this.template_dir);
@@ -18,6 +18,7 @@ var kuroapp = {
         this.screenTags = document.getElementById("tags-app");
         this.screenSettings = document.getElementById("settings-app");
         this.buttonDownload = document.getElementById("top-nav-button-download");
+        this.buttonFavorite = document.getElementById("top-nav-button-favorite");
         this.buttonTags = document.getElementById("top-nav-button-tags");
         // this.buttonTagsOff = document.getElementById("top-nav-button-tags");
         this.contentContainer = document.getElementById("content");
@@ -121,6 +122,7 @@ var kuroapp = {
         kuroapp.mcButtonRefresh = new Hammer(refreshButton);
         kuroapp.mcButtonSettings = new Hammer(settingsButton);
         kuroapp.mcButtonDownload = new Hammer(kuroapp.buttonDownload);
+        kuroapp.mcButtonFavorite = new Hammer(kuroapp.buttonFavorite);
         kuroapp.mcButtonTags = new Hammer(kuroapp.buttonTags);
         // kuroapp.mcButtonTagsOff = new Hammer(kuroapp.buttonTagsOff);
 
@@ -159,6 +161,11 @@ var kuroapp = {
         kuroapp.mcButtonDownload.on("tap press", function(ev) {
             kuroapp.log(ev.type + " gesture detected on download button.");
             kuroapp.downloadImage();
+        });
+
+        kuroapp.mcButtonFavorite.on("tap press", function(ev) {
+            kuroapp.log(ev.type + " gesture detected on favorite button.");
+            kuroapp.favoriteImage();
         });
 
         kuroapp.mcButtonTags.on("tap", function(ev) {
@@ -603,6 +610,7 @@ var kuroapp = {
         kuroapp.screenImage.setAttribute('style', 'display: none;');
         kuroapp.screenSettings.setAttribute('style', 'display: none;');
         kuroapp.buttonDownload.setAttribute('style', 'display: none;');
+	kuroapp.buttonFavorite.setAttribute('style', 'display: none;');
         kuroapp.buttonTags.setAttribute('style', 'display: none;');
         $(".content").css('background-image', 'none');
         kuroapp.screenTags.setAttribute('style', 'display: none;');
@@ -615,6 +623,7 @@ var kuroapp = {
         kuroapp.mcButtonPreviousImage.get('tap').set({ enable: false });
         kuroapp.mcButtonNextImage.get('tap').set({ enable: false });
         kuroapp.mcButtonDownload.get('tap').set({ enable: false });
+	kuroapp.mcButtonFavorite.get('tap').set({ enable: false });
         kuroapp.mcButtonTags.get('tap').set({ enable: false });
         // kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
 
@@ -689,6 +698,7 @@ var kuroapp = {
         kuroapp.screenImage.setAttribute('style', 'display: block;');
         kuroapp.screenSettings.setAttribute('style', 'display: none;');
         kuroapp.buttonDownload.setAttribute('style', 'display: block;');
+	kuroapp.buttonFavorite.setAttribute('style', 'display: block;');
         kuroapp.buttonTags.setAttribute('style', 'display: block;');
         $("#tags-view-left").empty();
         $("#tags-view-right").empty();
@@ -703,6 +713,7 @@ var kuroapp = {
         kuroapp.mcButtonPreviousImage.get('tap').set({ enable: true });
         kuroapp.mcButtonNextImage.get('tap').set({ enable: true });
         kuroapp.mcButtonDownload.get('tap').set({ enable: true });
+	kuroapp.mcButtonFavorite.get('tap').set({ enable: true });
         kuroapp.mcButtonTags.get('tap').set({ enable: true });
         // kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
         kuroapp.enableZoom();
@@ -726,6 +737,7 @@ var kuroapp = {
         kuroapp.screenTags.setAttribute('style', 'display: none;');
         kuroapp.screenSettings.setAttribute('style', 'display: block;');
         kuroapp.buttonDownload.setAttribute('style', 'display: none;');
+	kuroapp.buttonFavorite.setAttribute('style', 'display: none;');
         kuroapp.buttonTags.setAttribute('style', 'display: none;');
         $(".content").css('background-image', 'none');
         kuroapp.disableZoom();
@@ -736,6 +748,7 @@ var kuroapp = {
         document.removeEventListener("keydown", kuroapp.mainHotkeys, false);
         document.removeEventListener("keydown", kuroapp.imageHotkeys, false);
         kuroapp.mcButtonDownload.get('tap').set({ enable: false });
+	kuroapp.mcButtonFavorite.get('tap').set({ enable: false });
         kuroapp.mcButtonTags.get('tap').set({ enable: false });
         // kuroapp.mcButtonTagsOff.get('tap').set({ enable: false });
         $("#tags-view-left").empty();
@@ -852,6 +865,11 @@ var kuroapp = {
       xhr.send();
     },
 
+    favoriteImage: function() {
+        kuroapp.log("initiating image favorite");
+	
+    },
+    
     downloadImage: function() {
         // body...
         kuroapp.log("initiating image download");
