@@ -1,0 +1,16 @@
+[Unit]
+Description=Kurohai's Mobile Booru Service
+After=network-online.target
+
+
+[Service]
+#Type=forking
+Restart=always
+WorkingDirectory=/mnt/data/code/mobile-booru
+# ExecStart=/mnt/data/code/mobile-booru/phonegap-serve.sh
+ExecStart=/mnt/data/code/mobile-booru/run.sh
+ExecStop=/bin/kill -s TERM $MAINPID
+
+
+[Install]
+WantedBy=multi-user.target

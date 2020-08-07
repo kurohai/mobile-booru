@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+
+# cordova android config
+export JAVA_HOME=/opt/android-studio/jre/
+export ANDROID_SDK_ROOT=/mnt/data/code/android/sdk/
+export ANDROID_HOME=/mnt/data/code/android/sdk/
+
+# phone upload config
+export PHONE_FTP_USERNAME=root
+export PHONE_FTP_PASSWORD=M3rmaidPuss
+export PHONE_FTP_IP=10.0.0.23
+export PHONE_FTP_PORT=9010
+
